@@ -1,0 +1,17 @@
+body#dark {
+  background-color: #181818;
+  color: "#fff";
+}
+body#light {
+  background-color: #ededed;
+  color: "#000";
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.btn {
+  transition: all 1s ease-in-out;
+}
