@@ -4,29 +4,40 @@ import CustomizationTabAction from "@/components/customization-page/Customizatio
 import PageTitle from "@/components/ui/PageTitle";
 import CustomizationFormProvider from "@/context/Form/CustomizationFormContext";
 import { Tabs } from "antd";
+import {
+  useSearchParams,
+} from "react-router-dom";
 
 const items = [
   {
-    key: "Branding",
+    key: "branding",
     label: "Branding",
     children: <BrandingScreen />,
   },
   {
-    key: "Basic info",
+    key: "basic_info",
     label: "Basic info",
     children: <BasicInfoScreen />,
   },
 ];
 
 export default function CustomizationPage() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const activeTab = searchParams.get("tab");
+
   return (
     <>
       <CustomizationFormProvider>
         <PageTitle title={"Customization"} divider />
         <Tabs
-          defaultActiveKey="Branding"
+          defaultActiveKey={"branding"}
+          activeKey={activeTab}
           items={items}
           tabBarExtraContent={<CustomizationTabAction />}
+          onChange={(key_name) => {
+            // Change the query in URL
+            setSearchParams({ tab: key_name });
+          }}
         />
       </CustomizationFormProvider>
     </>
