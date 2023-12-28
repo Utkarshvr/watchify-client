@@ -1,16 +1,43 @@
-import { Button, Flex, Grid, Image, Typography } from "antd";
+import { Button, Flex, Grid, Image, Typography, message } from "antd";
 import LayoutMockup from "@/assets/images/Layout-Mockup.png";
-import { useAuthUser } from "@/context/Auth/AuthProvider";
+import UserPic from "@/assets/images/user-pic.jpg";
 import ScreenTitle from "@/components/ui/ScreenTitle";
+import {
+  useCustomizationAPI,
+  useCustomizationForm,
+} from "@/context/Form/CustomizationFormContext";
+import UploadBtn from "@/components/button/UploadBtn";
 
 export default function BrandingScreen() {
   const screens = Grid.useBreakpoint();
 
-  const user = useAuthUser();
+  const values = useCustomizationForm();
+  const api = useCustomizationAPI();
+
+  const removePicture = (field_name) => {
+    api.setFieldValue(`branding.${field_name}.file`, null);
+    api.setFieldValue(`branding.${field_name}.src`, "");
+  };
+
+  const uploadImg = (field_name, info) => {
+    // Display preview of the first uploaded image
+    if (info.fileList.length > 0) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        api.setFieldValue(`branding.${field_name}.src`, reader.result);
+      };
+      reader.readAsDataURL(
+        info.fileList[info.fileList.length - 1].originFileObj
+      );
+      api.setFieldValue(`branding.${field_name}.file`, info.file.originFileObj);
+    }
+  };
+
+  console.log(values);
 
   return (
     <>
-      <Flex vertical gap={32}>
+      <Flex style={{ maxWidth: "800px" }} vertical gap={32}>
         <Flex vertical gap={16}>
           <ScreenTitle
             title={"Picture"}
@@ -21,15 +48,16 @@ export default function BrandingScreen() {
               justify="center"
               align="center"
               style={{
-                maxWidth: 300,
+                width: 400,
                 padding: "2em 6em",
                 background: "rgb(37,37,37)",
               }}
             >
               <Image
-                src={user?.picture}
-                referrerpolicy="no-referrer"
-                width={140}
+                src={values?.branding?.user_picture?.src || UserPic}
+                referrerPolicy="no-referrer"
+                width={160}
+                height={160}
                 style={{ borderRadius: "100%" }}
               />
             </Flex>
@@ -40,8 +68,28 @@ export default function BrandingScreen() {
                 sure your picture follows the Community Guidelines.
               </Typography.Text>
               <Flex gap={16}>
-                <Button>Change</Button>
-                <Button>Remove</Button>
+                {values?.branding?.user_picture?.src ? (
+                  <>
+                    <UploadBtn
+                      title={"Change"}
+                      uploadImg={uploadImg}
+                      field_name={"user_picture"}
+                      roundCrop
+                    />
+                    <Button onClick={() => removePicture("user_picture")}>
+                      Remove
+                    </Button>
+                  </>
+                ) : (
+                  <>
+                    <UploadBtn
+                      title={"Upload"}
+                      uploadImg={uploadImg}
+                      field_name={"user_picture"}
+                      roundCrop
+                    />
+                  </>
+                )}
               </Flex>
             </Flex>
           </Flex>
@@ -57,15 +105,19 @@ export default function BrandingScreen() {
               justify="center"
               align="center"
               style={{
-                width: 300,
+                width: 400,
                 height: 200,
                 padding: "1em",
                 background: "rgb(37,37,37)",
               }}
             >
               <Image
-                referrerpolicy="no-referrer"
-                src={LayoutMockup}
+                referrerPolicy="no-referrer"
+                src={
+                  values?.branding?.banner_image?.src === ""
+                    ? LayoutMockup
+                    : values?.branding?.banner_image?.src
+                }
                 width={300}
               />
             </Flex>
@@ -75,7 +127,26 @@ export default function BrandingScreen() {
                 least 2048 x 1152 pixels and 6MB or less.
               </Typography.Text>
               <Flex gap={16}>
-                <Button>Upload</Button>
+                {values?.branding?.banner_image?.src ? (
+                  <>
+                    <UploadBtn
+                      title={"Change"}
+                      uploadImg={uploadImg}
+                      field_name={"banner_image"}
+                    />
+                    <Button onClick={() => removePicture("banner_image")}>
+                      Remove
+                    </Button>
+                  </>
+                ) : (
+                  <>
+                    <UploadBtn
+                      title={"Upload"}
+                      uploadImg={uploadImg}
+                      field_name={"banner_image"}
+                    />
+                  </>
+                )}
               </Flex>
             </Flex>
           </Flex>

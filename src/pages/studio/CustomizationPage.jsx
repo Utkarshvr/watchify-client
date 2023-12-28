@@ -1,7 +1,9 @@
 import BasicInfoScreen from "@/Screens/studio/BasicInfoScreen";
 import BrandingScreen from "@/Screens/studio/BrandingScreen";
+import CustomizationTabAction from "@/components/customization-page/CustomizationTabAction";
 import PageTitle from "@/components/ui/PageTitle";
-import { Button, Tabs } from "antd";
+import CustomizationFormProvider from "@/context/Form/CustomizationFormContext";
+import { Tabs } from "antd";
 
 const items = [
   {
@@ -19,18 +21,14 @@ const items = [
 export default function CustomizationPage() {
   return (
     <>
-      <PageTitle title={"Customization"} divider />
-      <Tabs
-        defaultActiveKey="Branding"
-        items={items}
-        // onChange={onChange}
-        tabBarExtraContent={
-          <>
-            {" "}
-            <Button>Btn</Button>
-          </>
-        }
-      />
+      <CustomizationFormProvider>
+        <PageTitle title={"Customization"} divider />
+        <Tabs
+          defaultActiveKey="Branding"
+          items={items}
+          tabBarExtraContent={<CustomizationTabAction />}
+        />
+      </CustomizationFormProvider>
     </>
   );
 }
