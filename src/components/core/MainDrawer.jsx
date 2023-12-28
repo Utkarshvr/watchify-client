@@ -64,7 +64,7 @@ export default function MainDrawer() {
         placement="left"
         onClose={onClose}
         open={open}
-        width={screens.xs ? 180 : 500}
+        width={screens.xs ? 180 : 300}
         styles={{ body: { padding: 0 } }}
       >
         <Menu
