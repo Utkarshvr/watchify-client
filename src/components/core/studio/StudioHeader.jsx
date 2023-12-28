@@ -3,10 +3,16 @@ import { Button, Flex, Grid } from "antd";
 import GoogleSignupBtn from "@/components/button/GoogleSignupBtn";
 import Search from "antd/es/input/Search";
 import { gray } from "@ant-design/colors";
-import { CloseOutlined, MenuOutlined, SearchOutlined } from "@ant-design/icons";
+import {
+  CloseOutlined,
+  MenuOutlined,
+  SearchOutlined,
+  UploadOutlined,
+} from "@ant-design/icons";
 import { useState } from "react";
 import { useDrawer } from "@/context/Other/DrawerProvider";
 import UserMenu from "../UserMenu";
+import { useModal } from "@/context/Other/ModalProvider";
 
 const boxStyle = {
   padding: "1em",
@@ -23,6 +29,7 @@ export default function StudioHeader() {
   const screens = useBreakpoint();
 
   const { showDrawer } = useDrawer();
+  const { showModal } = useModal();
 
   if (showInput)
     return (
@@ -61,7 +68,11 @@ export default function StudioHeader() {
         />
       ) : null}
 
-      <Flex gap={4} align={"center"}>
+      <Flex gap={16} align={"center"}>
+        <Button icon={<UploadOutlined />} onClick={showModal} type="primary">
+          Create
+        </Button>
+
         {screens.xs ? (
           <Button
             onClick={() => setShowInput(true)}

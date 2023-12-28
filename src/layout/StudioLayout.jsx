@@ -1,6 +1,7 @@
 import PrivateRoute from "@/components/ProtectedRoutes/PrivateRoute";
 import StudioDrawer from "@/components/core/studio/StudioDrawer";
 import StudioHeader from "@/components/core/studio/StudioHeader";
+import UploadVideoModal from "@/components/modal/UploadVideoModal";
 import { useDrawer } from "@/context/Other/DrawerProvider";
 import { gray } from "@ant-design/colors";
 import { Layout } from "antd";
@@ -24,6 +25,7 @@ const StudioLayout = () => {
       <Layout style={{ padding: "1em", backgroundColor: "transparent" }}>
         <PrivateRoute />
       </Layout>
+      <UploadVideoModal />
     </Layout>
   );
 };

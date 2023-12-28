@@ -7,6 +7,7 @@ import ErrorPage from "@/pages/error/ErrorPage";
 import { createBrowserRouter } from "react-router-dom";
 import CustomizationPage from "@/pages/studio/CustomizationPage";
 import RoughPage from "@/pages/rough/RoughPage";
+import ContentPage from "@/pages/studio/ContentPage";
 
 const router = createBrowserRouter([
   {
@@ -42,6 +43,10 @@ const router = createBrowserRouter([
           {
             path: "customization",
             element: <CustomizationPage />,
+          },
+          {
+            path: "content",
+            element: <ContentPage />,
           },
         ],
       },
