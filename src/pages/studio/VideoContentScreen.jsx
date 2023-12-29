@@ -60,7 +60,7 @@ export default function VideoContentScreen() {
               size="small"
               shape="circle"
             >
-              <Link to={`/videos/${video?.videoID}`}>
+              <Link target="_blank" to={`/videos/${video?.videoID}`}>
                 <LinkOutlined />
               </Link>
             </Button>
