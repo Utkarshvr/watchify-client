@@ -17,7 +17,9 @@ export const getUser = async () => {
 
 export const getAllVideos = async (userId) => {
   try {
-    const url = `${API_URL}/user/${userId}/videos`;
+    const url = userId
+      ? `${API_URL}/user/${userId}/videos`
+      : `${API_URL}/video/all`;
     const { data } = await axios.get(url);
 
     console.log(data);

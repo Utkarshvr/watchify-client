@@ -21,7 +21,7 @@ body#light {
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: rgb(114, 113, 113);
+  background-color: #727171;
   border-radius: 10px;
   height: 100px;
   width: 3px;
