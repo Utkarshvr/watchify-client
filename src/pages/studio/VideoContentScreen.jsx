@@ -4,7 +4,12 @@ import { getAllVideos } from "@/api/apiCalls";
 import { useAuthUser } from "@/context/Auth/AuthProvider";
 
 import VideoPlayerIntefaceImg from "@/assets/images/video-player-interface.jpg";
-import { EyeInvisibleOutlined, EyeOutlined } from "@ant-design/icons";
+import {
+  EyeInvisibleOutlined,
+  EyeOutlined,
+  LinkOutlined,
+} from "@ant-design/icons";
+import { Link } from "react-router-dom";
 
 const columns = [];
 
@@ -55,7 +60,9 @@ export default function VideoContentScreen() {
               size="small"
               shape="circle"
             >
-              <EyeOutlined />
+              <Link to={`/videos/${video?.videoID}`}>
+                <LinkOutlined />
+              </Link>
             </Button>
           </Flex>
         </Flex>

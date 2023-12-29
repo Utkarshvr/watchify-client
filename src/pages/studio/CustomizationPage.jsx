@@ -4,9 +4,7 @@ import CustomizationTabAction from "@/components/customization-page/Customizatio
 import PageTitle from "@/components/ui/PageTitle";
 import CustomizationFormProvider from "@/context/Form/CustomizationFormContext";
 import { Tabs } from "antd";
-import {
-  useSearchParams,
-} from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 
 const items = [
   {
@@ -31,7 +29,7 @@ export default function CustomizationPage() {
         <PageTitle title={"Customization"} divider />
         <Tabs
           defaultActiveKey={"branding"}
-          activeKey={activeTab}
+          activeKey={activeTab || "branding"}
           items={items}
           tabBarExtraContent={<CustomizationTabAction />}
           onChange={(key_name) => {

@@ -20,7 +20,7 @@ export default function ContentPage() {
       <PageTitle title={"Channel Content"} divider />
       <Tabs
         defaultActiveKey={"video"}
-        activeKey={activeTab}
+        activeKey={activeTab || "video"}
         items={items}
         // tabBarExtraContent={<CustomizationTabAction />}
         onChange={(key_name) => {
