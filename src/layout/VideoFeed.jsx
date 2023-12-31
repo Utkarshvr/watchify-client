@@ -1,7 +1,7 @@
 import { Row } from "antd";
 import VideoCard from "@/components/cards/VideoCard";
 
-export default function VideoFeed({ videos }) {
+export default function VideoFeed({ videos, vertical }) {
   return (
     <Row
       gutter={{
@@ -13,7 +13,7 @@ export default function VideoFeed({ videos }) {
       style={{ margin: 0 }}
     >
       {videos?.map((video) => (
-        <VideoCard key={video?._id} video={video} />
+        <VideoCard vertical={vertical} key={video?._id} video={video} />
       ))}
     </Row>
   );

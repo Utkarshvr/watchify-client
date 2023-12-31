@@ -8,13 +8,9 @@ export default function HomePage() {
   const [videos, setVideos] = useState([]);
   const user = useAuthUser();
   useEffect(() => {
-    console.log("first");
     (async () => {
-      console.log("IN AYSNC");
       try {
-        console.log("IN TRYY");
         const { data } = await getAllVideos(user?._id);
-        console.log("AFTER DATA");
         console.log(data);
 
         setVideos(data?.videos);

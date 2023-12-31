@@ -20,9 +20,21 @@ export const getAllVideos = async (userId) => {
     const url = userId
       ? `${API_URL}/user/${userId}/videos`
       : `${API_URL}/video/all`;
-    const { data } = await axios.get(url);
+    const { data } = await axios.get(url, { withCredentials: true });
 
     console.log(data);
+    return { data, error: null };
+  } catch (err) {
+    console.error(err);
+    return { data: null, error: err };
+  }
+};
+
+export const getVideoByID = async (videoID) => {
+  try {
+    const url = `${API_URL}/video/${videoID}`;
+    const { data } = await axios.get(url, { withCredentials: true });
+
     return { data, error: null };
   } catch (err) {
     console.error(err);

@@ -2,9 +2,9 @@ import { Avatar, Col, Flex, Image, Typography } from "antd";
 import { Link } from "react-router-dom";
 import { formatDistanceToNow } from "date-fns";
 
-export default function VideoCard({ video }) {
+export default function VideoCard({ video, vertical }) {
   return (
-    <Col className="gutter-row" span={8}>
+    <Col className="gutter-row" span={vertical ? 24 : 8}>
       <Link to={`/videos/${video?.videoID}`}>
         <Flex
           style={{
@@ -13,7 +13,7 @@ export default function VideoCard({ video }) {
             borderRadius: 12,
             // backgroundColor: "#282828",
             padding: 4,
-            marginBottom: 16,
+            // marginBottom: 16,
           }}
           vertical
           gap={6}

@@ -11,6 +11,10 @@ import UserMenu from "./UserMenu";
 const boxStyle = {
   padding: "1em",
   background: gray[7],
+  position: "sticky",
+  top: 0,
+  left: 0,
+  zIndex: 1000,
 };
 
 const { useBreakpoint } = Grid;

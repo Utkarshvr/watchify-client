@@ -8,6 +8,7 @@ import { createBrowserRouter } from "react-router-dom";
 import CustomizationPage from "@/pages/studio/CustomizationPage";
 import RoughPage from "@/pages/rough/RoughPage";
 import ContentPage from "@/pages/studio/ContentPage";
+import VideoPage from "@/pages/video/VideoPage";
 
 const router = createBrowserRouter([
   {
@@ -21,6 +22,10 @@ const router = createBrowserRouter([
           {
             path: "",
             element: <HomePage />,
+          },
+          {
+            path: "/videos/:videoID",
+            element: <VideoPage />,
           },
           {
             path: "/rough",
