@@ -1,19 +1,67 @@
-import { getVideoByID } from "@/api/apiCalls";
-import { Avatar, Flex, Image, Typography } from "antd";
+import {
+  getChannel,
+  getVideoByID,
+  likeContent,
+  subORUnsub,
+} from "@/api/apiCalls";
+import { gray } from "@ant-design/colors";
+import {
+  LikeOutlined,
+  MoreOutlined,
+  PlusCircleOutlined,
+  SaveOutlined,
+  ShareAltOutlined,
+} from "@ant-design/icons";
+import { Avatar, Button, Dropdown, Flex, Typography } from "antd";
 import { formatDistanceToNow } from "date-fns";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import ShareModal from "../modal/ShareModal";
+import { useAuthUser } from "@/context/Auth/AuthProvider";
+import SaveToPlaylistModal from "../modal/SaveToPlaylistModal";
+
+const items = [
+  {
+    key: "1",
+    label: "1st item",
+  },
+  {
+    key: "2",
+    label: "2nd item",
+  },
+  {
+    key: "3",
+    label: "3rd item",
+  },
+];
 
 export default function VideoCardLong({ videoID }) {
+  // Video States
   const [video, setVideo] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  console.log(video);
+  const [isLiked, setIsLiked] = useState(false);
+  const [likesCount, setLikesCount] = useState(0);
+
+  // Channel States
+  const [channelInfo, setchannelInfo] = useState(null);
+  const [isSubscribed, setIsSubscribed] = useState(null);
+  const [subscribersCount, setSubscribersCount] = useState(0);
+
+  // Share Modal
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
+  const [isSaveModalOpen, setIsSaveModalOpen] = useState(false);
+
+  // Own Details
+  const user = useAuthUser();
+
   useEffect(() => {
     (async () => {
       if (videoID) {
         try {
           const { data } = await getVideoByID(videoID);
           setVideo(data.video);
+          setIsLiked(data.video?.isLiked);
+          setLikesCount(data.video?.likes_count);
         } catch (error) {
           console.log(error);
         } finally {
@@ -22,13 +70,50 @@ export default function VideoCardLong({ videoID }) {
       }
     })();
   }, [videoID]);
+
+  const channelID = video?.creator?._id;
+
+  useEffect(() => {
+    if (channelID)
+      (async () => {
+        try {
+          const { data } = await getChannel(channelID);
+          setchannelInfo(data?.channel);
+          setIsSubscribed(data?.channel?.isSubscribed);
+          setSubscribersCount(data?.channel?.subscribers_count);
+        } catch (error) {
+          console.log(error);
+        }
+      })();
+  }, [channelID]);
+
+  async function subORUnsubChannel() {
+    try {
+      const { data } = await subORUnsub(channelID);
+      setIsSubscribed(data?.isSubscribed);
+      setSubscribersCount((prev) => (data?.isSubscribed ? prev + 1 : prev - 1));
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function likeORUnlikeVideo() {
+    try {
+      const { data } = await likeContent(videoID, "video");
+      setIsLiked(data?.isLiked);
+      setLikesCount((prev) => (data?.isLiked ? prev + 1 : prev - 1));
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return isLoading && !video ? (
     <p>LOADING...</p>
   ) : (
     <>
       <Flex
         style={{
-          widows: "100%",
+          width: "100%",
         }}
         vertical
         gap={6}
@@ -52,31 +137,108 @@ export default function VideoCardLong({ videoID }) {
             {video?.title}
           </Typography.Text>
 
-          <Flex gap={8} align="center">
-            <Link to={`/channel/@${video?.creator?.user_handle}`}>
-              <Avatar
-                style={{ minWidth: "40px", minHeight: "40px" }}
-                src={video?.creator?.picture}
-                size={"default"}
-              />
-            </Link>
-            <Flex vertical>
+          {/* Channel Info & Action Box */}
+          <Flex justify="space-between">
+            <Flex gap={8} align="center">
               <Link to={`/channel/@${video?.creator?.user_handle}`}>
-                <Typography.Text
-                  style={{ fontSize: 14 }}
-                  strong
-                  type="secondary"
-                >
-                  {video?.creator?.name}
-                </Typography.Text>
+                <Avatar
+                  style={{ minWidth: "40px", minHeight: "40px" }}
+                  src={video?.creator?.picture}
+                  size={"default"}
+                />
               </Link>
+              <Flex vertical>
+                <Link to={`/channel/@${video?.creator?.user_handle}`}>
+                  <Typography.Text
+                    style={{ fontSize: 14 }}
+                    strong
+                    type="secondary"
+                  >
+                    {video?.creator?.name}
+                  </Typography.Text>
+                </Link>
 
-              <Typography.Text style={{ fontSize: 12 }} type="secondary">
-                {"10.2M Subscribers"}
-              </Typography.Text>
+                <Typography.Text style={{ fontSize: 12 }} type="secondary">
+                  {subscribersCount}{" "}
+                  {subscribersCount === 1 ? "Subscriber" : "Subscribers"}
+                </Typography.Text>
+              </Flex>
+              {channelInfo ? (
+                user?._id === channelID ? null : isSubscribed ? (
+                  <Button onClick={subORUnsubChannel}>Unsubscribe</Button>
+                ) : (
+                  <Button onClick={subORUnsubChannel} type="primary">
+                    Subscribe
+                  </Button>
+                )
+              ) : null}
+            </Flex>
+
+            {/* Actions */}
+            <Flex align="center" gap={8}>
+              {/* (Like, Dislike) | Share |  */}
+
+              <Button
+                shape="circle"
+                icon={<LikeOutlined />}
+                style={{
+                  ...(isLiked ? { background: gray[6] } : {}),
+                }}
+                onClick={likeORUnlikeVideo}
+              >
+                {likesCount}
+              </Button>
+              <Button
+                onClick={() => setIsShareModalOpen(true)}
+                icon={<ShareAltOutlined />}
+              >
+                Share
+              </Button>
+              <Button
+                onClick={() => setIsSaveModalOpen(true)}
+                icon={<PlusCircleOutlined />}
+              >
+                Save
+              </Button>
+              {/* <Dropdown menu={{ items }} trigger={["click"]}>
+                <Button shape="circle" icon={<MoreOutlined />} />
+              </Dropdown> */}
             </Flex>
           </Flex>
+
+          {/* Description Box */}
+          <Flex
+            vertical
+            style={{ borderRadius: 12, background: gray[6], padding: 12 }}
+            gap={8}
+          >
+            <Typography.Text strong>
+              {video?.views_count}{" "}
+              {video?.views_count === 1 ? "view" : "views "}
+              {" | "}
+              {formatDistanceToNow(new Date(video?.createdAt), {
+                addSuffix: true,
+              })}
+            </Typography.Text>
+            <Typography.Text>{video?.desc}</Typography.Text>
+          </Flex>
         </Flex>
+
+        {/* MODAL */}
+        {isShareModalOpen ? (
+          <ShareModal
+            open={isShareModalOpen}
+            closeModal={() => setIsShareModalOpen(false)}
+            url={`${import.meta.env.VITE_CLIENT_URL}/videos/${videoID}`}
+          />
+        ) : null}
+        {isSaveModalOpen ? (
+          <SaveToPlaylistModal
+            open={isSaveModalOpen}
+            closeModal={() => setIsSaveModalOpen(false)}
+            video_uuid={video?._id}
+          />
+        ) : null}
       </Flex>
     </>
   );

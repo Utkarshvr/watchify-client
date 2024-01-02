@@ -11,7 +11,7 @@ export default function HomePage() {
     (async () => {
       try {
         const { data } = await getAllVideos(user?._id);
-        console.log(data);
+        // console.log(data);
 
         setVideos(data?.videos);
       } catch (error) {

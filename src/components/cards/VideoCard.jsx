@@ -9,11 +9,8 @@ export default function VideoCard({ video, vertical }) {
         <Flex
           style={{
             maxWidth: 400,
-
             borderRadius: 12,
-            // backgroundColor: "#282828",
             padding: 4,
-            // marginBottom: 16,
           }}
           vertical
           gap={6}
@@ -44,7 +41,8 @@ export default function VideoCard({ video, vertical }) {
               </Link>
               <Flex gap={2}>
                 <Typography.Text type="secondary">
-                  {"11K views "}
+                  {video?.views_count}{" "}
+                  {video?.views_count === 1 ? "view" : "views "}
                 </Typography.Text>
                 <Typography.Text type="secondary" strong>
                   &middot;

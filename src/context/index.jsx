@@ -1,4 +1,5 @@
 import AuthProvider from "./Auth/AuthProvider";
+import CreatePlaylistModalProvider from "./Other/CreatePlaylistModalProvider";
 import DrawerProvider from "./Other/DrawerProvider";
 import MessageProvider from "./Other/MessageProvider";
 import ModalProvider from "./Other/ModalProvider";
@@ -9,7 +10,9 @@ export default function Store({ children }) {
       <AuthProvider>
         <DrawerProvider>
           <ModalProvider>
-            <MessageProvider>{children}</MessageProvider>
+            <CreatePlaylistModalProvider>
+              <MessageProvider>{children}</MessageProvider>
+            </CreatePlaylistModalProvider>
           </ModalProvider>
         </DrawerProvider>
       </AuthProvider>
