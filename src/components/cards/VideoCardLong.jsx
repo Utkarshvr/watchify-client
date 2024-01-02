@@ -7,33 +7,16 @@ import {
 import { gray } from "@ant-design/colors";
 import {
   LikeOutlined,
-  MoreOutlined,
   PlusCircleOutlined,
-  SaveOutlined,
   ShareAltOutlined,
 } from "@ant-design/icons";
-import { Avatar, Button, Dropdown, Flex, Typography } from "antd";
+import { Avatar, Button, Flex, Typography } from "antd";
 import { formatDistanceToNow } from "date-fns";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import ShareModal from "../modal/ShareModal";
 import { useAuthUser } from "@/context/Auth/AuthProvider";
 import SaveToPlaylistModal from "../modal/SaveToPlaylistModal";
-
-const items = [
-  {
-    key: "1",
-    label: "1st item",
-  },
-  {
-    key: "2",
-    label: "2nd item",
-  },
-  {
-    key: "3",
-    label: "3rd item",
-  },
-];
 
 export default function VideoCardLong({ videoID }) {
   // Video States

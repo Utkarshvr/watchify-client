@@ -9,6 +9,7 @@ import CustomizationPage from "@/pages/studio/CustomizationPage";
 import RoughPage from "@/pages/rough/RoughPage";
 import ContentPage from "@/pages/studio/ContentPage";
 import VideoPage from "@/pages/video/VideoPage";
+import ChannelPage from "@/pages/channel/ChannelPage";
 
 const router = createBrowserRouter([
   {
@@ -26,6 +27,10 @@ const router = createBrowserRouter([
           {
             path: "/videos/:videoID",
             element: <VideoPage />,
+          },
+          {
+            path: "/channel/:user_handle",
+            element: <ChannelPage />,
           },
           {
             path: "/rough",
