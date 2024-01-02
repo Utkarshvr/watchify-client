@@ -23,7 +23,7 @@ export default function PlaylistsFeed({ channelID, vertical }) {
     })();
   }, [channelID]);
 
-  console.log({ playlists });
+  console.log(vertical);
 
   return (
     <Row
@@ -35,11 +35,16 @@ export default function PlaylistsFeed({ channelID, vertical }) {
       }}
       style={{ margin: 0 }}
     >
-      <Col className="gutter-row" span={vertical ? 24 : 8}>
-        {playlists?.map((playlist) => (
-          <PlaylistCard key={playlist?._id} playlist={playlist} />
-        ))}
-      </Col>
+      {playlists?.map((playlist) => (
+        <Col
+          key={playlist?._id}
+          className="gutter-row"
+          span={vertical ? 24 : 6}
+          style={{ marginBottom: 16 }}
+        >
+          <PlaylistCard playlist={playlist} />
+        </Col>
+      ))}
     </Row>
   );
 }

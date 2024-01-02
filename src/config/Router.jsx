@@ -10,6 +10,7 @@ import RoughPage from "@/pages/rough/RoughPage";
 import ContentPage from "@/pages/studio/ContentPage";
 import VideoPage from "@/pages/video/VideoPage";
 import ChannelPage from "@/pages/channel/ChannelPage";
+import PlaylistPage from "@/pages/playlist/PlaylistPage";
 
 const router = createBrowserRouter([
   {
@@ -31,6 +32,10 @@ const router = createBrowserRouter([
           {
             path: "/channel/:user_handle",
             element: <ChannelPage />,
+          },
+          {
+            path: "/playlist/:playlistID",
+            element: <PlaylistPage />,
           },
           {
             path: "/rough",

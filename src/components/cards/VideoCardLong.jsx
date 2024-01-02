@@ -101,18 +101,23 @@ export default function VideoCardLong({ videoID }) {
         vertical
         gap={6}
       >
-        {/* THUMBNAIL */}
-        <video
-          src={video?.link}
-          controls
-          autoPlay
-          style={{
-            borderRadius: 12,
-            width: "1200px",
-            maxWidth: "100%",
-            maxHeight: 600,
-          }}
-        />
+        <Flex
+        align="center"
+        justify="center"
+        >
+          {/* THUMBNAIL */}
+          <video
+            src={video?.link}
+            controls
+            autoPlay
+            style={{
+              borderRadius: 12,
+              width: "1200px",
+              maxWidth: "100%",
+              maxHeight: 600,
+            }}
+          />
+        </Flex>
 
         {/* CHANNEL INFO */}
         <Flex vertical style={{ padding: "0 0.5em" }} gap={8}>

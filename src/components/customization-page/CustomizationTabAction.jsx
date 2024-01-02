@@ -22,6 +22,7 @@ function createCustomizationFormData(values) {
 
     // Basic Info
     name: values.basic.name,
+    desc: values.basic.desc,
     user_handle: values.basic.user_handle,
     links: values.basic.links,
   };
@@ -49,6 +50,8 @@ export default function CustomizationTabAction() {
 
   const { setToUserInitialState } = useCustomizationExtendedAPI();
   const { initialStateAccToUserObject } = useCustomizationExtendedInfo();
+
+  // console.log(initialStateAccToUserObject, values);
 
   const differ = objectsDiffer(initialStateAccToUserObject, values);
 

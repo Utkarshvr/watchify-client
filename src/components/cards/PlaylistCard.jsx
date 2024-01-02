@@ -12,13 +12,15 @@ export default function PlaylistCard({ playlist }) {
         <div
           style={{
             position: "relative",
-            width: 260,
+            // width: 260,
             borderRadius: 16,
+            width: "100%",
           }}
         >
           <Image
             style={{
               borderRadius: 16,
+              maxWidth: "100%",
             }}
             preview={false}
             src={playlist?.videos[0]?.thumbnail || NoThumbnailImage}

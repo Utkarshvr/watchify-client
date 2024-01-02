@@ -1,3 +1,4 @@
+// import JoditNoteEditor from "@/components/input/MDEditor";
 import { API_URL } from "@/config/api.routes";
 import { Button, Flex } from "antd";
 import axios from "axios";
@@ -135,6 +136,8 @@ export default function RoughPage() {
       <Button onClick={createPlaylist}>Create Playlist</Button>
       <Button onClick={addToThePlaylist}>Update Playlist: {playlistID}</Button>
       <Button onClick={addToAllThePlaylists}>Update All Playlists</Button>
+
+      {/* <JoditNoteEditor /> */}
     </Flex>
   );
 }

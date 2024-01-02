@@ -1,10 +1,11 @@
 import { subORUnsub } from "@/api/apiCalls";
+import ChannelDescModal from "@/components/modal/ChannelDescModal";
 import { API_URL } from "@/config/api.routes";
 import { useAuthUser } from "@/context/Auth/AuthProvider";
 import PlaylistsFeed from "@/layout/PlaylistsFeed";
 import VideoFeed from "@/layout/VideoFeed";
 import { gray } from "@ant-design/colors";
-import { EditOutlined } from "@ant-design/icons";
+import { EditOutlined, RightOutlined } from "@ant-design/icons";
 import { Button, Flex, Image, Tabs, Typography } from "antd";
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -16,6 +17,9 @@ export default function ChannelPage() {
   const [subscribersCount, setSubscribersCount] = useState(0);
 
   const [videos, setVideos] = useState([]);
+
+  // Modal States
+  const [isDescModalOpen, setIsDescModalOpen] = useState(false);
 
   const user = useAuthUser();
 
@@ -138,6 +142,16 @@ export default function ChannelPage() {
                 : ` | ${videos?.length} 
               ${videos?.length === 1 ? "Video" : "Videos"}`}
             </Typography.Text>
+            <Flex
+              gap={4}
+              style={{ cursor: "pointer" }}
+              onClick={() => setIsDescModalOpen(true)}
+            >
+              <Typography.Text strong type="secondary">
+                {channel?.desc}
+              </Typography.Text>
+              <RightOutlined style={{ color: gray[5] }} />
+            </Flex>
             <Typography.Text type="secondary">
               {channel?.links?.length === 1 ? (
                 <Link target="_blank" to={channel?.links[0]?.url}>
@@ -152,8 +166,14 @@ export default function ChannelPage() {
                   </Link>
                   <Typography.Text strong>
                     {" "}
-                    and {channel?.links?.length - 1} more{" "}
-                    {channel?.links?.length - 1 === 1 ? "link" : "links"}
+                    <Typography.Text
+                      strong
+                      style={{ cursor: "pointer" }}
+                      onClick={() => setIsDescModalOpen(true)}
+                    >
+                      and {channel?.links?.length - 1} more{" "}
+                      {channel?.links?.length - 1 === 1 ? "link" : "links"}
+                    </Typography.Text>
                   </Typography.Text>
                 </>
               )}
@@ -189,6 +209,13 @@ export default function ChannelPage() {
           items={items}
           // tabBarExtraContent={<CustomizationTabAction />}
           onChange={(key_name) => setSearchParams({ tab: key_name })}
+        />
+
+        {/* MODAL */}
+        <ChannelDescModal
+          open={isDescModalOpen}
+          closeModal={() => setIsDescModalOpen(false)}
+          channel={channel}
         />
       </Flex>
     </>

@@ -16,6 +16,7 @@ const INITIAL_STATE = {
   basic: {
     id: "",
     name: "",
+    desc: "",
     user_handle: "",
     channelID: "",
     links: [
@@ -61,6 +62,9 @@ export default function CustomizationFormProvider({ children }) {
 
       api.setFieldValue("basic.name", user?.name);
       initialStateAccToUserObject.basic.name = user?.name || "";
+
+      api.setFieldValue("basic.desc", user?.desc || "");
+      initialStateAccToUserObject.basic.desc = user?.desc || "";
 
       api.setFieldValue("basic.user_handle", user?.user_handle);
       initialStateAccToUserObject.basic.user_handle = user?.user_handle || "";

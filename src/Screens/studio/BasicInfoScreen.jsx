@@ -78,7 +78,19 @@ export default function BasicInfoScreen() {
                 onChange={api.handleChange}
                 name="basic.user_handle"
               />
-              <Typography.Text type="secondary">{`https://www.watchify.com/${values?.basic?.user_handle}`}</Typography.Text>
+              <Typography.Text type="secondary">{`${
+                import.meta.env.VITE_CLIENT_URL
+              }/channel/@${values?.basic?.user_handle}`}</Typography.Text>
+            </Flex>
+            <Flex vertical gap={12}>
+              <ScreenTitle title={"Description"} />
+              <Input.TextArea
+                placeholder="Description"
+                value={values?.basic?.desc}
+                onChange={api.handleChange}
+                name="basic.desc"
+                style={{ height: 160 }}
+              />
             </Flex>
             <Flex vertical gap={12}>
               <ScreenTitle
