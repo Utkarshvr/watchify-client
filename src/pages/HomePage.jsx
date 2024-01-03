@@ -13,12 +13,14 @@ export default function HomePage() {
         const { data } = await getAllVideos();
         // console.log(data);
 
-        setVideos(data?.videos);
+        setVideos(data?.videos || []);
       } catch (error) {
         console.log(error);
       }
     })();
   }, []);
 
-  return <>{videos.length > 0 ? <VideoFeed videos={videos} /> : <NoVideo />}</>;
+  return (
+    <>{videos?.length > 0 ? <VideoFeed videos={videos} /> : <NoVideo />}</>
+  );
 }
