@@ -27,21 +27,19 @@ const columns = [];
 //   };
 export default function VideoContentScreen() {
   const [videos, setVideos] = useState([]);
-  const user = useAuthUser();
+  // const user = useAuthUser();
   console.log(videos);
 
   useEffect(() => {
     (async () => {
-      if (user) {
-        try {
-          const { data } = await getAllVideos(user?._id);
-          setVideos(data?.videos);
-        } catch (error) {
-          console.log(error);
-        }
+      try {
+        const { data } = await getAllVideos();
+        setVideos(data?.videos);
+      } catch (error) {
+        console.log(error);
       }
     })();
-  }, [user?._id]);
+  }, []);
 
   const dataSource = videos.map((video) => ({
     key: video?._id,

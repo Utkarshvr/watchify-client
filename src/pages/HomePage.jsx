@@ -6,11 +6,11 @@ import { useEffect, useState } from "react";
 
 export default function HomePage() {
   const [videos, setVideos] = useState([]);
-  const user = useAuthUser();
+  // const user = useAuthUser();
   useEffect(() => {
     (async () => {
       try {
-        const { data } = await getAllVideos(user?._id);
+        const { data } = await getAllVideos();
         // console.log(data);
 
         setVideos(data?.videos);

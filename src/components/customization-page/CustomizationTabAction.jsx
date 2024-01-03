@@ -59,7 +59,7 @@ export default function CustomizationTabAction() {
     try {
       const formData = createCustomizationFormData(values);
 
-      const url = `${API_URL}/user/${values.basic.id}/customize`;
+      const url = `${API_URL}/user/me/customize`;
       const { data } = await axios.post(url, formData);
       console.log(data);
       message.success(data.msg);

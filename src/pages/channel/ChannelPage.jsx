@@ -1,4 +1,4 @@
-import { subORUnsub } from "@/api/apiCalls";
+import { getAllVideos, subORUnsub } from "@/api/apiCalls";
 import ChannelDescModal from "@/components/modal/ChannelDescModal";
 import { API_URL } from "@/config/api.routes";
 import { useAuthUser } from "@/context/Auth/AuthProvider";
@@ -55,12 +55,7 @@ export default function ChannelPage() {
     if (channel)
       (async () => {
         try {
-          const { data } = await axios.get(
-            `${API_URL}/channel/${channel?._id}/videos`,
-            {
-              withCredentials: true,
-            }
-          );
+          const { data } = await getAllVideos(channel?._id);
           console.log(data);
           setVideos(data?.videos);
           return { data, error: null };
