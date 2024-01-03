@@ -1,4 +1,4 @@
-import { getUser } from "@/api/apiCalls";
+import { customiseUser, getUser } from "@/api/apiCalls";
 import { API_URL } from "@/config/api.routes";
 import { useAuthAPI } from "@/context/Auth/AuthProvider";
 import {
@@ -59,8 +59,7 @@ export default function CustomizationTabAction() {
     try {
       const formData = createCustomizationFormData(values);
 
-      const url = `${API_URL}/user/me/customize`;
-      const { data } = await axios.post(url, formData);
+      const { data } = await customiseUser(formData);
       console.log(data);
       message.success(data.msg);
 

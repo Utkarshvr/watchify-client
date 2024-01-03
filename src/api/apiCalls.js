@@ -127,3 +127,24 @@ export async function addVideoToPlaylist(video_uuid, playlistID) {
     return { data: null, error };
   }
 }
+
+export async function customiseUser(formData) {
+  try {
+    const url = `${API_URL}/user/me/customize`;
+    const data = await axiosInstance.post(url, formData);
+    return { data, error: null };
+  } catch (error) {
+    return { data: null, error };
+  }
+}
+
+export async function getWatchHistory() {
+  try {
+    const url = `${API_URL}/user/me/watch-history`;
+    const data = await axiosInstance.get(url);
+    console.log(data);
+    return { data, error: null };
+  } catch (error) {
+    return { data: null, error };
+  }
+}

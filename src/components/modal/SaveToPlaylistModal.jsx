@@ -27,7 +27,11 @@ export default function SaveToPlaylistModal({ open, closeModal, video_uuid }) {
       try {
         const { data } = await getUsersPlaylists();
 
-        setPlaylists(data?.playlists);
+        const playlistsExcludingLikedVideos = data?.playlists?.filter(
+          (list) => list?.title !== "Liked Videos"
+        );
+
+        setPlaylists(playlistsExcludingLikedVideos);
       } catch (error) {
         console.log(error);
       } finally {

@@ -13,7 +13,7 @@ export default function VideoPage() {
   const { videoID } = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
   const playlistID = searchParams.get("playlist");
-  const videoIndex = searchParams.get("index") || 0;
+  // const videoIndex = searchParams.get("index") || 0;
 
   const [videos, setVideos] = useState([]);
   const [isLoading, setIsLoading] = useState(true);

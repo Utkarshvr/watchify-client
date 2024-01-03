@@ -7,6 +7,8 @@ export default function VideoFeed({
   vertical,
   usage,
   playlistID,
+  align,
+  showLastWatched,
 }) {
   return (
     <Row
@@ -17,6 +19,7 @@ export default function VideoFeed({
         lg: 32,
       }}
       style={{ margin: 0 }}
+      align={align}
     >
       {videos?.map((video, index) => (
         <VideoCard
@@ -27,6 +30,7 @@ export default function VideoFeed({
           index={index}
           playlistID={playlistID}
           activeVideo={activeVideo}
+          showLastWatched={showLastWatched}
         />
       ))}
     </Row>

@@ -42,6 +42,8 @@ export default function VideoCardLong({ videoID }) {
       if (videoID) {
         try {
           const { data } = await getVideoByID(videoID);
+          console.log(data);
+
           setVideo(data.video);
           setIsLiked(data.video?.isLiked);
           setLikesCount(data.video?.likes_count);
@@ -101,10 +103,7 @@ export default function VideoCardLong({ videoID }) {
         vertical
         gap={6}
       >
-        <Flex
-        align="center"
-        justify="center"
-        >
+        <Flex align="center" justify="center">
           {/* THUMBNAIL */}
           <video
             src={video?.link}
@@ -208,7 +207,9 @@ export default function VideoCardLong({ videoID }) {
                 addSuffix: true,
               })}
             </Typography.Text>
-            <Typography.Text>{video?.desc}</Typography.Text>
+            <Typography.Text style={{ whiteSpace: "break-spaces" }}>
+              {video?.desc}
+            </Typography.Text>
           </Flex>
         </Flex>
 

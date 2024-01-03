@@ -10,6 +10,7 @@ export default function VideoCard({
   playlistID,
   index,
   activeVideo,
+  showLastWatched = false,
 }) {
   const isUsedInPlaylist = usage === "playlist";
 
@@ -95,6 +96,14 @@ export default function VideoCard({
                     })}
                   </Typography.Text>
                 </Flex>
+                {showLastWatched && video?.lastWatched && (
+                  <Typography.Text type="secondary">
+                    Watched:{" "}
+                    {formatDistanceToNow(new Date(video?.lastWatched), {
+                      addSuffix: true,
+                    })}
+                  </Typography.Text>
+                )}
               </Flex>
             </Flex>
           </Flex>

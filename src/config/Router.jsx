@@ -11,6 +11,7 @@ import ContentPage from "@/pages/studio/ContentPage";
 import VideoPage from "@/pages/video/VideoPage";
 import ChannelPage from "@/pages/channel/ChannelPage";
 import PlaylistPage from "@/pages/playlist/PlaylistPage";
+import HistoryPage from "@/pages/history/HistoryPage";
 
 const router = createBrowserRouter([
   {
@@ -36,6 +37,10 @@ const router = createBrowserRouter([
           {
             path: "/playlist/:playlistID",
             element: <PlaylistPage />,
+          },
+          {
+            path: "/history",
+            element: <HistoryPage />,
           },
           {
             path: "/rough",

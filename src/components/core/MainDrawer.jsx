@@ -1,13 +1,21 @@
 import { useDrawer } from "@/context/Other/DrawerProvider";
 import { Drawer, Grid, Menu } from "antd";
 import {
+  ClockCircleOutlined,
   EditOutlined,
+  HistoryOutlined,
   HomeOutlined,
   LayoutOutlined,
+  LikeOutlined,
+  PlayCircleOutlined,
   PlaySquareOutlined,
+  UnorderedListOutlined,
+  UserOutlined,
 } from "@ant-design/icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { useAuthUser } from "@/context/Auth/AuthProvider";
+import { getUsersPlaylists } from "@/api/apiCalls";
 
 function getItem(label, key, icon, children, type) {
   return {
@@ -19,42 +27,96 @@ function getItem(label, key, icon, children, type) {
   };
 }
 
-const items = [
-  getItem(<Link to={""}>Home</Link>, "sub1", <HomeOutlined />),
-  getItem(<Link to={"studio"}>Studio</Link>, "sub1", <HomeOutlined />),
-  getItem(
-    <Link to={"subscription"}>Subscription</Link>,
-    "sub2",
-    <PlaySquareOutlined />
-  ),
-  getItem(<Link to={"customization"}>You</Link>, "sub3", <EditOutlined />, [
-    getItem(<Link to={""}>Your Channel</Link>, "sub1", <LayoutOutlined />),
-    getItem(<Link to={""}>Your Videos</Link>, "sub1", <LayoutOutlined />),
-    getItem(<Link to={""}>History</Link>, "sub1", <LayoutOutlined />),
-    getItem(<Link to={""}>Watch Later</Link>, "sub1", <LayoutOutlined />),
-    getItem(<Link to={""}>Liked Videos</Link>, "sub1", <LayoutOutlined />),
-    getItem(<Link to={""}>Playlist</Link>, "sub1", <LayoutOutlined />, [
-      getItem(
-        <Link to={""}>Tate Podcasts 🎙️</Link>,
-        "sub1",
-        <LayoutOutlined />
-      ),
-      getItem(
-        <Link to={""}>Everything about Money 💰</Link>,
-        "sub1",
-        <LayoutOutlined />
-      ),
-    ]),
-  ]),
-];
-
 export default function MainDrawer() {
   const { open, onClose } = useDrawer();
   const [current, setCurrent] = useState("1");
+  const [playlists, setPlaylists] = useState([]);
+
+  const user = useAuthUser();
+  useEffect(() => {
+    (async () => {
+      if (user?._id) {
+        const { data } = await getUsersPlaylists();
+        setPlaylists(data?.playlists);
+      }
+    })();
+  }, [user?._id]);
   const onClick = (e) => {
     console.log("click ", e);
     setCurrent(e.key);
   };
+
+  const items = [
+    getItem(<Link to={""}>Home</Link>, "Home", <HomeOutlined />),
+    getItem(<Link to={"studio"}>Studio</Link>, "Studio", <LayoutOutlined />),
+    getItem(
+      <Link to={"subscription"}>Subscription</Link>,
+      "Subscription",
+      <PlaySquareOutlined />
+    ),
+    getItem(
+      <Link to={"customization"}>You</Link>,
+      "customization",
+      <EditOutlined />,
+      [
+        getItem(
+          <Link to={`/channel/@${user?.user_handle}`}>Your Channel</Link>,
+          "Your Channel",
+          <UserOutlined />
+        ),
+        getItem(
+          <Link to={"/studio/content"}>Your Videos</Link>,
+          "Your Videos",
+          <PlayCircleOutlined />
+        ),
+        getItem(
+          <Link to={"/history"}>History</Link>,
+          "History",
+          <HistoryOutlined />
+        ),
+        getItem(
+          <Link to={`/playlist/${user?.watch_later_playlist_id}`}>
+            Watch Later
+          </Link>,
+          "Watch Later",
+          <ClockCircleOutlined />
+        ),
+        getItem(
+          <Link to={`/playlist/${user?.liked_videos_playlist_id}`}>
+            Liked Videos
+          </Link>,
+          "Liked Videos",
+          <LikeOutlined />
+        ),
+        getItem(
+          <>
+            Playlist (
+            {
+              playlists
+                .map((playlist) => !playlist?.isDefault && true)
+                .filter(Boolean).length
+            }
+            )
+          </>,
+          "Playlist",
+          <PlaySquareOutlined />,
+          playlists
+            .map(
+              (playlist) =>
+                !playlist?.isDefault &&
+                getItem(
+                  <Link to={`/playlist/${playlist?._id}`}>
+                    {playlist?.title}
+                  </Link>,
+                  playlist?.title,
+                  <UnorderedListOutlined />
+                )
+            )
+            .filter(Boolean)
+        ),
+      ]
+    ),
+  ];
 
   const screens = Grid.useBreakpoint();
   return (
