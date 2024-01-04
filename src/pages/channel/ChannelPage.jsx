@@ -95,25 +95,26 @@ export default function ChannelPage() {
     <>
       <Flex style={{ padding: 24 }} vertical gap={24}>
         {/* Banner */}
-        <Flex
-          style={{
-            borderRadius: 24,
-            height: 250,
-            background: gray[6],
-          }}
-        >
-          <Image
+        {channel?.banner_image && (
+          <Flex
             style={{
-              borderRadius: 16,
-              height: "100%",
-              objectFit: "cover",
+              borderRadius: 24,
+              height: 250,
+              background: gray[6],
             }}
-            preview={false}
-            src={channel?.banner_image}
-            width={"100%"}
-          />
-        </Flex>
-
+          >
+            <Image
+              style={{
+                borderRadius: 16,
+                height: "100%",
+                objectFit: "cover",
+              }}
+              preview={false}
+              src={channel?.banner_image}
+              width={"100%"}
+            />
+          </Flex>
+        )}
         {/* Info */}
         <Flex gap={16}>
           <Image
@@ -137,51 +138,60 @@ export default function ChannelPage() {
                 : ` | ${videos?.length} 
               ${videos?.length === 1 ? "Video" : "Videos"}`}
             </Typography.Text>
-            <Flex
-              gap={4}
-              style={{ cursor: "pointer" }}
-              onClick={() => setIsDescModalOpen(true)}
-            >
-              <Typography.Text strong type="secondary">
-                {channel?.desc}
-              </Typography.Text>
-              <RightOutlined style={{ color: gray[5] }} />
-            </Flex>
-            <Typography.Text type="secondary">
-              {channel?.links?.length === 1 ? (
-                <Link target="_blank" to={channel?.links[0]?.url}>
-                  {channel?.links[0]?.url}
-                </Link>
-              ) : (
-                <>
+            {channel?.desc && (
+              <Flex
+                gap={4}
+                style={{ cursor: "pointer" }}
+                onClick={() => setIsDescModalOpen(true)}
+              >
+                <Typography.Text strong type="secondary">
+                  {channel?.desc}
+                </Typography.Text>
+                <RightOutlined style={{ color: gray[5] }} />
+              </Flex>
+            )}
+            {channel?.links?.length > 0 && (
+              <Typography.Text type="secondary">
+                {channel?.links?.length === 1 ? (
                   <Link target="_blank" to={channel?.links[0]?.url}>
-                    <Typography.Text strong style={{ color: "#3e7bff" }}>
-                      {channel?.links[0]?.url?.replace(/^https:\/\//, "")}
-                    </Typography.Text>
+                    {channel?.links[0]?.url}
                   </Link>
-                  <Typography.Text strong>
-                    {" "}
-                    <Typography.Text
-                      strong
-                      style={{ cursor: "pointer" }}
-                      onClick={() => setIsDescModalOpen(true)}
-                    >
-                      and {channel?.links?.length - 1} more{" "}
-                      {channel?.links?.length - 1 === 1 ? "link" : "links"}
+                ) : (
+                  <>
+                    <Link target="_blank" to={channel?.links[0]?.url}>
+                      <Typography.Text strong style={{ color: "#3e7bff" }}>
+                        {channel?.links[0]?.url?.replace(/^https:\/\//, "")}
+                      </Typography.Text>
+                    </Link>
+                    <Typography.Text strong>
+                      {" "}
+                      <Typography.Text
+                        strong
+                        style={{ cursor: "pointer" }}
+                        onClick={() => setIsDescModalOpen(true)}
+                      >
+                        and {channel?.links?.length - 1} more{" "}
+                        {channel?.links?.length - 1 === 1 ? "link" : "links"}
+                      </Typography.Text>
                     </Typography.Text>
-                  </Typography.Text>
-                </>
-              )}
-            </Typography.Text>
-
+                  </>
+                )}
+              </Typography.Text>
+            )}
             {/* Actions */}
             <Flex>
-              {user?._id && channel?._id ? (
+              {channel?._id ? (
                 !isMyOwnChannel ? (
                   isSubscribed ? (
-                    <Button onClick={subORUnsubChannel}>Unsubscribe</Button>
+                    <Button disabled={!user?._id} onClick={subORUnsubChannel}>
+                      Unsubscribe
+                    </Button>
                   ) : (
-                    <Button onClick={subORUnsubChannel} type="primary">
+                    <Button
+                      disabled={!user?._id}
+                      onClick={subORUnsubChannel}
+                      type="primary"
+                    >
                       Subscribe
                     </Button>
                   )

@@ -1,11 +1,13 @@
 import NoVideo from "@/Screens/NoVideo";
 import { getAllVideos } from "@/api/apiCalls";
+import Loading from "@/components/ui/Loading";
 import { useAuthUser } from "@/context/Auth/AuthProvider";
 import VideoFeed from "@/layout/VideoFeed";
 import { useEffect, useState } from "react";
 
 export default function HomePage() {
   const [videos, setVideos] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   // const user = useAuthUser();
   useEffect(() => {
     (async () => {
@@ -16,9 +18,13 @@ export default function HomePage() {
         setVideos(data?.videos || []);
       } catch (error) {
         console.log(error);
+      } finally {
+        setIsLoading(false);
       }
     })();
   }, []);
+
+  if (isLoading) return <Loading />;
 
   return (
     <>{videos?.length > 0 ? <VideoFeed videos={videos} /> : <NoVideo />}</>

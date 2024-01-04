@@ -76,7 +76,7 @@ export const subORUnsub = async (channelID) => {
     return { data, error: null };
   } catch (error) {
     console.log(error);
-    return { data: null, error };
+    throw error;
   }
 };
 
@@ -88,7 +88,8 @@ export async function likeContent(videoID, contentType) {
     return { data, error: null };
   } catch (error) {
     console.log(error);
-    return { data: null, error };
+    throw error;
+    // return { data: null, error };
   }
 }
 

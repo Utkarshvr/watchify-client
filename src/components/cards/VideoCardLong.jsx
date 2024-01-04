@@ -36,6 +36,7 @@ export default function VideoCardLong({ videoID }) {
 
   // Own Details
   const user = useAuthUser();
+  console.log(user?._id && channelInfo ? true : false);
 
   useEffect(() => {
     (async () => {
@@ -63,6 +64,7 @@ export default function VideoCardLong({ videoID }) {
       (async () => {
         try {
           const { data } = await getChannel(channelID);
+          console.log({ channel: data?.channel });
           setchannelInfo(data?.channel);
           setIsSubscribed(data?.channel?.isSubscribed);
           setSubscribersCount(data?.channel?.subscribers_count);
@@ -150,7 +152,7 @@ export default function VideoCardLong({ videoID }) {
                   {subscribersCount === 1 ? "Subscriber" : "Subscribers"}
                 </Typography.Text>
               </Flex>
-              {channelInfo ? (
+              {user?._id && channelInfo ? (
                 user?._id === channelID ? null : isSubscribed ? (
                   <Button onClick={subORUnsubChannel}>Unsubscribe</Button>
                 ) : (
@@ -172,6 +174,7 @@ export default function VideoCardLong({ videoID }) {
                   ...(isLiked ? { background: gray[6] } : {}),
                 }}
                 onClick={likeORUnlikeVideo}
+                disabled={!user?._id}
               >
                 {likesCount}
               </Button>
@@ -181,12 +184,15 @@ export default function VideoCardLong({ videoID }) {
               >
                 Share
               </Button>
-              <Button
-                onClick={() => setIsSaveModalOpen(true)}
-                icon={<PlusCircleOutlined />}
-              >
-                Save
-              </Button>
+              {user?._id && (
+                <Button
+                  onClick={() => setIsSaveModalOpen(true)}
+                  icon={<PlusCircleOutlined />}
+                  disabled={!user?._id}
+                >
+                  Save
+                </Button>
+              )}
               {/* <Dropdown menu={{ items }} trigger={["click"]}>
                 <Button shape="circle" icon={<MoreOutlined />} />
               </Dropdown> */}
