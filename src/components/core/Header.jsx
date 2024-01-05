@@ -73,9 +73,11 @@ export default function Header() {
       ) : null}
 
       <Flex gap={8} align={"center"}>
-        <Button icon={<UploadOutlined />} onClick={showModal} type="primary">
-          Create
-        </Button>
+        {user?._id && (
+          <Button icon={<UploadOutlined />} onClick={showModal} type="primary">
+            Create
+          </Button>
+        )}
         {screens.xs ? (
           <Button
             onClick={() => setShowInput(true)}
