@@ -24,6 +24,7 @@ export default function SaveToPlaylistModal({ open, closeModal, video_uuid }) {
 
   useEffect(() => {
     (async () => {
+      setIsLoading(true);
       try {
         const { data } = await getUsersPlaylists();
 

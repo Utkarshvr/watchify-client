@@ -1,8 +1,8 @@
 import MainSider from "@/components/core/MainSider";
 import MainHeader from "@/components/core/Header";
 import { Layout, theme } from "antd";
-import { Outlet, useLocation } from "react-router-dom";
-import { useEffect, useLayoutEffect } from "react";
+import { Outlet } from "react-router-dom";
+import { useLayoutEffect } from "react";
 import { useSider } from "@/context/Other/SiderProvider";
 // import MainSider from "@/components/core/MainSider";
 
@@ -11,15 +11,8 @@ const { Header } = Layout;
 const MainLayout = () => {
   const { collapsed } = useSider();
 
-  // // Close the modal every time route changes
-  // const path = useLocation().pathname;
-
-  // useEffect(() => {
-  //   if (path) closeSider();
-  // }, [path]);
-
   const {
-    token: { colorBgContainer },
+    token: { colorBgContainer, screenXXL },
   } = theme.useToken();
 
   useLayoutEffect(() => {
@@ -41,7 +34,11 @@ const MainLayout = () => {
   }, [collapsed]);
 
   return (
-    <Layout style={{ minHeight: "100vh" }}>
+    <Layout
+      style={{
+        minHeight: "100vh",
+      }}
+    >
       <Header
         style={{
           padding: "1em",
@@ -57,12 +54,25 @@ const MainLayout = () => {
         <MainHeader />
       </Header>
 
-      <Layout>
+      <Layout
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
         {/* Sider */}
         <MainSider />
         {/* <MainSider /> */}
 
-        <Layout style={{ background: colorBgContainer }} id="main-content">
+        <Layout
+          style={{
+            background: colorBgContainer,
+
+            maxWidth: screenXXL,
+          }}
+          id="main-content"
+        >
           <Outlet />
         </Layout>
       </Layout>

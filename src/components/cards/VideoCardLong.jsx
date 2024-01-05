@@ -17,6 +17,8 @@ import { Link } from "react-router-dom";
 import ShareModal from "../modal/ShareModal";
 import { useAuthUser } from "@/context/Auth/AuthProvider";
 import SaveToPlaylistModal from "../modal/SaveToPlaylistModal";
+import DescriptionBox from "../ui/DescriptionBox";
+import Loading from "../ui/Loading";
 
 export default function VideoCardLong({ videoID }) {
   // Video States
@@ -95,7 +97,7 @@ export default function VideoCardLong({ videoID }) {
   }
 
   return isLoading && !video ? (
-    <p>LOADING...</p>
+    <Loading />
   ) : (
     <>
       <Flex
@@ -200,23 +202,19 @@ export default function VideoCardLong({ videoID }) {
           </Flex>
 
           {/* Description Box */}
-          <Flex
-            vertical
-            style={{ borderRadius: 12, background: gray[6], padding: 12 }}
-            gap={8}
-          >
-            <Typography.Text strong>
-              {video?.views_count}{" "}
-              {video?.views_count === 1 ? "view" : "views "}
-              {" | "}
-              {formatDistanceToNow(new Date(video?.createdAt), {
-                addSuffix: true,
-              })}
-            </Typography.Text>
-            <Typography.Text style={{ whiteSpace: "break-spaces" }}>
-              {video?.desc}
-            </Typography.Text>
-          </Flex>
+          <DescriptionBox
+            Title={
+              <Typography.Text strong>
+                {video?.views_count}{" "}
+                {video?.views_count === 1 ? "view" : "views "}
+                {" | "}
+                {formatDistanceToNow(new Date(video?.createdAt), {
+                  addSuffix: true,
+                })}
+              </Typography.Text>
+            }
+            content={video?.desc}
+          />
         </Flex>
 
         {/* MODAL */}

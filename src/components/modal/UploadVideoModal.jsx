@@ -1,20 +1,46 @@
-import { Button, Flex, Image, Input, Modal, Typography, Upload } from "antd";
+import {
+  Button,
+  Flex,
+  Image,
+  Input,
+  Modal,
+  Switch,
+  Typography,
+  Upload,
+} from "antd";
 import { useModal } from "@/context/Other/ModalProvider";
 import { useFormik } from "formik";
 import TextArea from "antd/es/input/TextArea";
-import { UploadOutlined } from "@ant-design/icons";
+import { PlusCircleOutlined, UploadOutlined } from "@ant-design/icons";
 import { API_URL } from "@/config/api.routes";
 import axios from "axios";
 import { useAuthUser } from "@/context/Auth/AuthProvider";
 import { useEffect, useState } from "react";
 import { useMessageAPI } from "@/context/Other/MessageProvider";
+import { createVideo, getUsersPlaylists } from "@/api/apiCalls";
+import { useCreatePlaylistModal } from "@/context/Other/CreatePlaylistModalProvider";
+import SelectPlaylist from "../input/select/SelectPlaylist";
 
 function createVideoFormData(values) {
   const formData = new FormData();
 
   // Append fields to formData
   for (const field in values) {
-    if (typeof values[field] === "object") {
+    console.log(
+      typeof values[field],
+
+      "isArray: ",
+      Array.isArray(values[field])
+    );
+
+    if (Array.isArray(values[field])) {
+      console.log("ARRAYY!!!!");
+      console.log(values[field]);
+      values[field].forEach((playlistID, index) => {
+        console.log(`${field}[${index}]`, playlistID);
+        formData.append(`${field}[${index}]`, playlistID);
+      });
+    } else if (typeof values[field] === "object") {
       console.log(field, values[field]);
       formData.append(field, values[field]?.file);
     } else {
@@ -43,6 +69,8 @@ const UploadVideoModal = () => {
       video: { file: null, src: "" },
       thumbnail: { file: null, src: "" },
 
+      selectedPlaylists: [],
+
       isPublic: true,
     },
     onSubmit: async (values, { resetForm }) => {
@@ -50,8 +78,8 @@ const UploadVideoModal = () => {
       try {
         const formData = createVideoFormData(values);
 
-        const url = `${API_URL}/video/create`;
-        const { data } = await axios.post(url, formData);
+        const data = await createVideo(formData);
+
         console.log(data);
         resetForm();
         closeModal();
@@ -102,6 +130,43 @@ const UploadVideoModal = () => {
     reader.readAsDataURL(info.fileList[info.fileList.length - 1].originFileObj);
   };
 
+  // User's PLaylist
+
+  // Playlist Modal API
+  const {
+    showModal: showPlaylistCreationModal,
+    open: openPlaylistCreationModal,
+  } = useCreatePlaylistModal();
+
+  // Get user's all playlists
+  const [playlists, setPlaylists] = useState([]);
+  // const [selectedPlaylists, setSelectedPlaylists] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    (async () => {
+      setIsLoading(true);
+      try {
+        const { data } = await getUsersPlaylists();
+
+        const playlistsExcludingDefault = data?.playlists?.filter(
+          (list) => !list?.isDefault
+        );
+
+        setPlaylists(playlistsExcludingDefault || []);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setIsLoading(false);
+      }
+    })();
+  }, [openPlaylistCreationModal]);
+
+  const onPlaylistSelection = (selectedArray) => {
+    // setSelectedPlaylists(selectedArray);
+    setFieldValue("selectedPlaylists", selectedArray);
+  };
+
   return (
     <>
       <Modal
@@ -117,24 +182,53 @@ const UploadVideoModal = () => {
         onCancel={closeModal}
         width={1000}
       >
-        <Flex vertical gap={16}>
-          <Input
-            placeholder="Title"
-            value={values?.title}
-            onChange={handleChange}
-            name="title"
-          />
-          <TextArea
-            placeholder="Description"
-            value={values?.desc}
-            onChange={handleChange}
-            name="desc"
-            style={{ height: 100 }}
-          />
+        <Flex gap={16}>
+          <Flex flex={0.6} vertical gap={16}>
+            <Input
+              placeholder="Title"
+              value={values?.title}
+              onChange={handleChange}
+              name="title"
+            />
+            <TextArea
+              placeholder="Description"
+              value={values?.desc}
+              onChange={handleChange}
+              name="desc"
+              style={{ height: 100 }}
+            />
+            <Flex align="center" gap={8}>
+              <Typography.Text style={{ fontSize: 16 }} type="secondary">
+                Public:{" "}
+              </Typography.Text>
+              <Switch
+                onChange={(checked) => setFieldValue("isPublic", checked)}
+                checked={values.isPublic}
+                // size="small"
+                style={{ maxWidth: "max-content" }}
+              />
+            </Flex>
+            <Flex vertical gap={4}>
+              <SelectPlaylist
+                allPlaylists={playlists}
+                loading={isLoading}
+                selectedPlaylists={values.selectedPlaylists}
+                onPlaylistSelection={onPlaylistSelection}
+              />
+              <Button
+                icon={<PlusCircleOutlined />}
+                style={{ maxWidth: "max-content" }}
+                onClick={showPlaylistCreationModal}
+                type="text"
+              >
+                Create New Playlist
+              </Button>
+            </Flex>
+          </Flex>
 
-          <Flex align="center" gap={8}>
+          <Flex flex={0.4} align="center" vertical gap={8}>
             <Flex
-              style={{ width: "50%" }}
+              // style={{ width: "50%" }}
               justify="center"
               align="center"
               gap={8}
@@ -145,8 +239,8 @@ const UploadVideoModal = () => {
                     <Image
                       src={values?.thumbnail?.src}
                       referrerPolicy="no-referrer"
-                      style={{ width: "100%" }}
-                      height={180}
+                      style={{ maxWidth: 360 }}
+                      // height={200}
                     />
 
                     <Button onClick={removeThumbnail} type="text" danger>
@@ -162,7 +256,7 @@ const UploadVideoModal = () => {
                     onChange={addThumbnail}
                     accept="image/*"
                     showUploadList={false}
-                    style={{ width: "100%" }}
+                    style={{ maxWidth: 360 }}
                   >
                     <Button
                       type="dashed"
@@ -184,7 +278,7 @@ const UploadVideoModal = () => {
               </Flex>
             </Flex>
             <Flex
-              style={{ width: "50%" }}
+              // style={{ width: "50%" }}
               align="center"
               justify="center"
               gap={8}
@@ -195,7 +289,7 @@ const UploadVideoModal = () => {
                   <>
                     <video
                       src={values?.video?.src}
-                      style={{ width: "100%" }}
+                      style={{ maxWidth: 360 }}
                       height={200}
                       autoPlay
                       controls

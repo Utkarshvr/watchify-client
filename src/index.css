@@ -34,3 +34,11 @@ body#light {
 body {
   overflow: overlay;
 }
+
+.desc-box-hover-style:hover {
+  background-color: #888;
+}
+
+.desc-box-hover-style:hover {
+  background-color: #121212;
+}

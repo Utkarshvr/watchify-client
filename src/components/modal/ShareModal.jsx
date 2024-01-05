@@ -21,8 +21,10 @@ const ButtonStyle = {
   alignItems: "center",
 };
 
-export default function ShareModal({ open, closeModal, url }) {
+export default function ShareModal({ open, closeModal }) {
   const [isCopied, setIsCopied] = useState(false);
+  const url = location.href;
+
   return (
     <Modal
       title="Share Video"

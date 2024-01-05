@@ -28,6 +28,18 @@ export const getUser = async () => {
   }
 };
 
+export const createVideo = async (formData) => {
+  try {
+    const url = `${API_URL}/video/create`;
+    const { data } = await axiosInstance.post(url, formData);
+
+    return { data, error: null };
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
+};
+
 export const getAllVideos = async (userId) => {
   try {
     const url = userId
@@ -99,7 +111,7 @@ export async function getUsersPlaylists() {
     return { data, error: null };
   } catch (error) {
     console.log(error);
-    return { data: null, error };
+    throw error;
   }
 }
 

@@ -7,6 +7,8 @@ import { getAllVideos } from "@/api/apiCalls";
 import axios from "axios";
 import { API_URL } from "@/config/api.routes";
 import { gray } from "@ant-design/colors";
+import Loading from "@/components/ui/Loading";
+import CommentSection from "@/components/section/CommentSection";
 
 export default function VideoPage() {
   // ROUTER STATES
@@ -58,18 +60,16 @@ export default function VideoPage() {
 
   return (
     <>
-      <Flex
-        style={{ height: "150vw", padding: 24, position: "relative" }}
-        gap={24}
-      >
-        <Flex vertical flex={0.7}>
+      <Flex style={{ padding: 24, position: "relative" }} gap={24}>
+        <Flex vertical gap={20} flex={0.7}>
           <Flex>
             <VideoCardLong videoID={videoID} />
           </Flex>
-          <Flex>Comments</Flex>
+          <CommentSection videoID={videoID} />
         </Flex>
         <Flex vertical flex={0.3}>
           {isLoading ? (
+            // <Loading />
             <p>LOADING...</p>
           ) : playlistID ? (
             <>
