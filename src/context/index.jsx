@@ -1,6 +1,6 @@
 import AuthProvider from "./Auth/AuthProvider";
 import CreatePlaylistModalProvider from "./Other/CreatePlaylistModalProvider";
-import DrawerProvider from "./Other/DrawerProvider";
+import SiderProvider from "./Other/SiderProvider";
 import MessageProvider from "./Other/MessageProvider";
 import ModalProvider from "./Other/ModalProvider";
 
@@ -8,13 +8,13 @@ export default function Store({ children }) {
   return (
     <>
       <AuthProvider>
-        <DrawerProvider>
+        <SiderProvider>
           <ModalProvider>
             <CreatePlaylistModalProvider>
               <MessageProvider>{children}</MessageProvider>
             </CreatePlaylistModalProvider>
           </ModalProvider>
-        </DrawerProvider>
+        </SiderProvider>
       </AuthProvider>
     </>
   );

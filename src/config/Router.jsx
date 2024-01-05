@@ -12,6 +12,7 @@ import VideoPage from "@/pages/video/VideoPage";
 import ChannelPage from "@/pages/channel/ChannelPage";
 import PlaylistPage from "@/pages/playlist/PlaylistPage";
 import HistoryPage from "@/pages/history/HistoryPage";
+import NewLayoutPage from "@/layout/rough/NewLayoutPage";
 
 const router = createBrowserRouter([
   {
@@ -42,9 +43,23 @@ const router = createBrowserRouter([
             path: "/history",
             element: <HistoryPage />,
           },
+        ],
+      },
+    ],
+  },
+  {
+    path: "/rough",
+    // element: <MainLayout />,
+    children: [
+      {
+        children: [
           {
-            path: "/rough",
+            path: "",
             element: <RoughPage />,
+          },
+          {
+            path: "new-layout",
+            element: <NewLayoutPage />,
           },
         ],
       },

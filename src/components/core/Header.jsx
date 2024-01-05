@@ -2,7 +2,6 @@ import { useAuthUser } from "@/context/Auth/AuthProvider";
 import { Button, Flex, Grid } from "antd";
 import GoogleSignupBtn from "../button/GoogleSignupBtn";
 import Search from "antd/es/input/Search";
-import { gray } from "@ant-design/colors";
 import {
   CloseOutlined,
   MenuOutlined,
@@ -10,22 +9,17 @@ import {
   UploadOutlined,
 } from "@ant-design/icons";
 import { useState } from "react";
-import { useDrawer } from "@/context/Other/DrawerProvider";
+import { useSider } from "@/context/Other/SiderProvider";
 import UserMenu from "./UserMenu";
 import { useModal } from "@/context/Other/ModalProvider";
 
 const boxStyle = {
-  padding: "1em",
-  background: gray[7],
-  position: "sticky",
-  top: 0,
-  left: 0,
-  zIndex: 1000,
+  width: "100%",
 };
 
 const { useBreakpoint } = Grid;
 
-export default function Header() {
+export default function MainHeader() {
   const [showInput, setShowInput] = useState(false);
 
   const user = useAuthUser();
@@ -33,7 +27,7 @@ export default function Header() {
 
   const screens = useBreakpoint();
 
-  const { showDrawer } = useDrawer();
+  const { toggleSider } = useSider();
 
   if (showInput)
     return (
@@ -60,7 +54,7 @@ export default function Header() {
 
   return (
     <Flex style={boxStyle} gap={36} justify={"space-between"} align={"center"}>
-      <Button onClick={showDrawer} type="text" icon={<MenuOutlined />} />
+      <Button onClick={toggleSider} type="text" icon={<MenuOutlined />} />
 
       {!screens.xs ? (
         <Search

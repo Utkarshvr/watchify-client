@@ -1,25 +1,27 @@
-import { useSider } from "@/context/Other/SiderProvider";
-import { Sider, Menu } from "antd";
+import { Layout, Menu } from "antd";
 import {
   EditOutlined,
+  HomeOutlined,
   LayoutOutlined,
   PlaySquareOutlined,
 } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { useSider } from "@/context/Other/SiderProvider";
 
-function getItem(label, key, icon, children, type) {
+const { Sider } = Layout;
+
+function getItem(label, key, icon, children) {
   return {
     key,
     icon,
     children,
     label,
-    type,
   };
 }
 
 const items = [
-  getItem(<Link to={"/"}>Home</Link>, "home", <LayoutOutlined />),
+  getItem(<Link to={"/"}>Home</Link>, "home", <HomeOutlined />),
   getItem(
     <Link to={"/studio"}>Dashboard</Link>,
     "dashboard",
@@ -38,16 +40,15 @@ const items = [
 ];
 
 export default function StudioSider() {
-  const { open, onClose } = useSider();
-  const [current, setCurrent] = useState("");
+  const { collapsed, toggleSider } = useSider();
+
+  const [current, setCurrent] = useState("dashboard");
   const onClick = (e) => {
-    console.log("click ", e);
     setCurrent(e.key);
   };
   // Close the modal every time route changes
   const path = useLocation().pathname;
 
-  console.log(current);
   useEffect(() => {
     switch (path) {
       case "/studio":
@@ -65,28 +66,32 @@ export default function StudioSider() {
   }, [path]);
 
   return (
-    <>
-      <Sider
-        title="Studio"
-        placement="left"
-        onClose={onClose}
-        open={open}
-        width={200}
-        styles={{ body: { padding: 0 } }}
-      >
-        <Menu
-          onClick={onClick}
-          style={{
-            width: "100%",
-            minHeight: "100%",
-          }}
-          defaultSelectedKeys={["1"]}
-          defaultOpenKeys={["sub1"]}
-          selectedKeys={[current]}
-          mode="inline"
-          items={items}
-        />
-      </Sider>
-    </>
+    <Sider
+      id="main-sider"
+      collapsible
+      collapsed={collapsed}
+      onCollapse={toggleSider}
+      theme="light"
+      style={{
+        overflow: "auto",
+        position: "fixed",
+        left: 0,
+        bottom: 0,
+      }}
+    >
+      <div className="demo-logo-vertical" />
+      <Menu
+        onClick={onClick}
+        style={{
+          width: "100%",
+          minHeight: "100%",
+        }}
+        defaultSelectedKeys={["Home"]}
+        defaultOpenKeys={["Home"]}
+        selectedKeys={[current]}
+        mode="inline"
+        items={items}
+      />
+    </Sider>
   );
 }

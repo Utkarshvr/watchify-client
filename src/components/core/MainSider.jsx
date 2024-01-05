@@ -1,5 +1,4 @@
-import { useSider } from "@/context/Other/SiderProvider";
-import { Sider, Grid, Menu } from "antd";
+import { Layout, Menu } from "antd";
 import {
   ClockCircleOutlined,
   EditOutlined,
@@ -12,27 +11,23 @@ import {
   UnorderedListOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { useSider } from "@/context/Other/SiderProvider";
 import { useAuthUser } from "@/context/Auth/AuthProvider";
+import { useEffect, useState } from "react";
 import { getUsersPlaylists } from "@/api/apiCalls";
+import { getMenuItem } from "@/helpers/UIHelpers";
+import { Link } from "react-router-dom";
 
-function getItem(label, key, icon, children, type) {
-  return {
-    key,
-    icon,
-    children,
-    label,
-    type,
-  };
-}
+const { Sider } = Layout;
 
 export default function MainSider() {
-  const { open, onClose } = useSider();
-  const [current, setCurrent] = useState("1");
+  const { collapsed, toggleSider } = useSider();
+
+  const [current, setCurrent] = useState("Home");
   const [playlists, setPlaylists] = useState([]);
 
   const user = useAuthUser();
+
   useEffect(() => {
     (async () => {
       if (user?._id) {
@@ -41,60 +36,78 @@ export default function MainSider() {
       }
     })();
   }, [user?._id]);
+
   const onClick = (e) => {
-    console.log("click ", e);
     setCurrent(e.key);
   };
 
   const items = [
-    getItem(<Link to={""}>Home</Link>, "Home", <HomeOutlined />),
-    getItem(<Link to={"studio"}>Studio</Link>, "Studio", <LayoutOutlined />),
-    getItem(
+    getMenuItem(<Link to={""}>Home</Link>, "Home", <HomeOutlined />),
+    getMenuItem(
+      <Link to={"studio"}>Studio</Link>,
+      "Studio",
+      <LayoutOutlined />
+    ),
+    getMenuItem(
       <Link to={"subscription"}>Subscription</Link>,
       "Subscription",
       <PlaySquareOutlined />
     ),
-    getItem(
+    getMenuItem(
       <Link to={"customization"}>You</Link>,
       "customization",
-      <EditOutlined />,
+      <UserOutlined />,
       [
-        getItem(
+        getMenuItem(
           <Link to={`/channel/@${user?.user_handle}`}>Your Channel</Link>,
           "Your Channel",
           <UserOutlined />
         ),
-        getItem(
+        getMenuItem(
           <Link to={"/studio/content"}>Your Videos</Link>,
           "Your Videos",
           <PlayCircleOutlined />
         ),
-        getItem(
+        getMenuItem(
           <Link to={"/history"}>History</Link>,
           "History",
           <HistoryOutlined />
         ),
-        getItem(
-          <Link to={`/playlist/${user?.watch_later_playlist_id}`}>
+        getMenuItem(
+          <Link
+            to={`/playlist/${
+              playlists?.find(
+                (playlist) =>
+                  playlist?.isDefault && playlist?.title === "Watch Later"
+              )?._id
+            }`}
+          >
             Watch Later
           </Link>,
+
           "Watch Later",
           <ClockCircleOutlined />
         ),
-        getItem(
-          <Link to={`/playlist/${user?.liked_videos_playlist_id}`}>
+        getMenuItem(
+          <Link
+            to={`/playlist/${
+              playlists?.find(
+                (playlist) =>
+                  playlist?.isDefault && playlist?.title === "Liked Videos"
+              )?._id
+            }`}
+          >
             Liked Videos
           </Link>,
           "Liked Videos",
           <LikeOutlined />
         ),
-        getItem(
+        getMenuItem(
           <>
             Playlist (
             {
-              playlists
-                .map((playlist) => !playlist?.isDefault && true)
-                .filter(Boolean).length
+              playlists.filter((playlist) => !playlist?.isDefault && true)
+                .length
             }
             )
           </>,
@@ -104,7 +117,7 @@ export default function MainSider() {
             .map(
               (playlist) =>
                 !playlist?.isDefault &&
-                getItem(
+                getMenuItem(
                   <Link to={`/playlist/${playlist?._id}`}>
                     {playlist?.title}
                   </Link>,
@@ -118,30 +131,33 @@ export default function MainSider() {
     ),
   ];
 
-  const screens = Grid.useBreakpoint();
   return (
-    <>
-      <Sider
-        title="Watchify"
-        placement="left"
-        onClose={onClose}
-        open={open}
-        width={screens.xs ? 180 : 300}
-        styles={{ body: { padding: 0 } }}
-      >
-        <Menu
-          onClick={onClick}
-          style={{
-            width: "100%",
-            minHeight: "100%",
-          }}
-          defaultSelectedKeys={["1"]}
-          defaultOpenKeys={["sub1"]}
-          selectedKeys={[current]}
-          mode="inline"
-          items={items}
-        />
-      </Sider>
-    </>
+    <Sider
+      id="main-sider"
+      collapsible
+      collapsed={collapsed}
+      onCollapse={toggleSider}
+      theme="light"
+      style={{
+        overflow: "auto",
+        position: "fixed",
+        left: 0,
+        bottom: 0,
+      }}
+    >
+      <div className="demo-logo-vertical" />
+      <Menu
+        onClick={onClick}
+        style={{
+          width: "100%",
+          minHeight: "100%",
+        }}
+        defaultSelectedKeys={["Home"]}
+        defaultOpenKeys={["Home"]}
+        selectedKeys={[current]}
+        mode="inline"
+        items={items}
+      />
+    </Sider>
   );
 }
