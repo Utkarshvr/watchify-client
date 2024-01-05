@@ -1,5 +1,5 @@
 import { useAuthUser } from "@/context/Auth/AuthProvider";
-import { Button, Flex, Grid } from "antd";
+import { Button, Flex, Grid, Typography } from "antd";
 import GoogleSignupBtn from "../button/GoogleSignupBtn";
 import Search from "antd/es/input/Search";
 import {
@@ -37,6 +37,9 @@ export default function MainHeader() {
         justify={"space-between"}
         align={"center"}
       >
+        <Typography.Text strong style={{ fontSize: 20 }}>
+          Watchify
+        </Typography.Text>
         <Search
           placeholder="Search"
           allowClear
@@ -54,7 +57,12 @@ export default function MainHeader() {
 
   return (
     <Flex style={boxStyle} gap={36} justify={"space-between"} align={"center"}>
-      <Button onClick={toggleSider} type="text" icon={<MenuOutlined />} />
+      <Flex gap={24}>
+        <Button onClick={toggleSider} type="text" icon={<MenuOutlined />} />
+        <Typography.Text strong style={{ fontSize: 20 }}>
+          Watchify
+        </Typography.Text>
+      </Flex>
 
       {!screens.xs ? (
         <Search
@@ -69,7 +77,7 @@ export default function MainHeader() {
       <Flex gap={8} align={"center"}>
         {user?._id && (
           <Button icon={<UploadOutlined />} onClick={showModal} type="primary">
-            Create
+            Upload
           </Button>
         )}
         {screens.xs ? (

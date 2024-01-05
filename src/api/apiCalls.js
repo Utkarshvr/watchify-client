@@ -31,7 +31,36 @@ export const getUser = async () => {
 export const createVideo = async (formData) => {
   try {
     const url = `${API_URL}/video/create`;
-    const { data } = await axiosInstance.post(url, formData);
+    const data = await axiosInstance.post(url, formData);
+
+    return { data, error: null };
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
+};
+
+export const getCommentsOfVideo = async (videoID) => {
+  try {
+    const url = `${API_URL}/video/${videoID}/comments`;
+    const data = await axiosInstance.get(url);
+
+    return { data, error: null };
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
+};
+
+export const addCommentToVideo = async (videoID, formData, parentCommentID) => {
+  try {
+    const url = parentCommentID
+      ? `${API_URL}/video/${videoID}/comment?parentCommentID=${parentCommentID}`
+      : `${API_URL}/video/${videoID}/comment`;
+
+    console.log(url);
+
+    const data = await axiosInstance.post(url, formData);
 
     return { data, error: null };
   } catch (err) {

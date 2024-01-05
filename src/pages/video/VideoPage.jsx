@@ -16,6 +16,7 @@ export default function VideoPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const playlistID = searchParams.get("playlist");
   // const videoIndex = searchParams.get("index") || 0;
+  const [videoUUID, setVideoUUID] = useState(null);
 
   const [videos, setVideos] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -29,6 +30,9 @@ export default function VideoPage() {
         const { data } = await getAllVideos();
         // console.log(data);
 
+        setVideoUUID(
+          data?.videos?.find((video) => video?.videoID === videoID)?._id
+        );
         setVideos(data?.videos?.filter((video) => video?.videoID !== videoID));
       } catch (error) {
         console.log(error);
@@ -58,6 +62,8 @@ export default function VideoPage() {
       })();
   }, [playlistID]);
 
+  console.log({ videoUUID });
+
   return (
     <>
       <Flex style={{ padding: 24, position: "relative" }} gap={24}>
@@ -65,7 +71,7 @@ export default function VideoPage() {
           <Flex>
             <VideoCardLong videoID={videoID} />
           </Flex>
-          <CommentSection videoID={videoID} />
+          <CommentSection videoID={videoUUID} />
         </Flex>
         <Flex vertical flex={0.3}>
           {isLoading ? (

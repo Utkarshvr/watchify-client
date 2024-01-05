@@ -1,16 +1,17 @@
 import { useAuthUser } from "@/context/Auth/AuthProvider";
 import { Avatar, Button, Flex, Input } from "antd";
-import { useState } from "react";
 
-export default function AddComment() {
+export default function AddComment({
+  isReply,
+  handleChange,
+  value,
+  showActions,
+  hideActions,
+  isUserCommentingorReplying,
+  onSubmit,
+  isPostingComment,
+}) {
   const user = useAuthUser();
-
-  const [value, setValue] = useState("");
-  const [isUserCommenting, setIsUserCommenting] = useState(false);
-
-  const handleChange = (event) => {
-    setValue(event.target.value);
-  };
 
   const autoExpand = () => {
     const textarea = document.getElementById("autoExpandTextarea");
@@ -21,29 +22,37 @@ export default function AddComment() {
   return (
     <Flex gap={12} vertical>
       <Flex align="center" gap={16}>
-        <Avatar src={user?.picture} size={"large"} />
+        <Avatar src={user?.picture} size={isReply ? "small" : "large"} />
 
         <Input.TextArea
           id="autoExpandTextarea"
-          placeholder="Add a comment..."
+          placeholder={isReply ? "Add a reply..." : "Add a comment..."}
           value={value}
           onChange={handleChange}
-          onClick={() => setIsUserCommenting(true)}
+          onClick={showActions}
           onInput={autoExpand}
           rows="1"
           style={{
             width: "100%",
             resize: "none",
-            padding: 12,
+            padding: isReply ? 6 : 12,
             overflow: "hidden",
           }}
+          size={isReply ? "small" : "middle"}
         />
       </Flex>
-      {isUserCommenting && (
+      {isUserCommentingorReplying && (
         <Flex justify="end" gap={8}>
-          <Button onClick={() => setIsUserCommenting(false)}>Cancel</Button>
-          <Button type="primary" disabled={!value}>
-            Comment
+          <Button size={isReply ? "small" : "middle"} onClick={hideActions}>
+            Cancel
+          </Button>
+          <Button
+            size={isReply ? "small" : "middle"}
+            type="primary"
+            disabled={!value || isPostingComment}
+            onClick={onSubmit}
+          >
+            {isReply ? "Reply" : "Comment"}
           </Button>
         </Flex>
       )}

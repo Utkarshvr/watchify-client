@@ -1,5 +1,5 @@
 import { useAuthUser } from "@/context/Auth/AuthProvider";
-import { Button, Flex, Grid } from "antd";
+import { Button, Flex, Grid, Typography } from "antd";
 import GoogleSignupBtn from "@/components/button/GoogleSignupBtn";
 import Search from "antd/es/input/Search";
 import {
@@ -36,6 +36,9 @@ export default function StudioHeader() {
         justify={"space-between"}
         align={"center"}
       >
+        <Typography.Text strong style={{ fontSize: 20 }}>
+          Watchify
+        </Typography.Text>
         <Search
           placeholder="Search"
           allowClear
@@ -53,8 +56,12 @@ export default function StudioHeader() {
 
   return (
     <Flex style={boxStyle} gap={36} justify={"space-between"} align={"center"}>
-      <Button onClick={toggleSider} type="text" icon={<MenuOutlined />} />
-
+      <Flex gap={24}>
+        <Button onClick={toggleSider} type="text" icon={<MenuOutlined />} />
+        <Typography.Text strong style={{ fontSize: 20 }}>
+          Watchify
+        </Typography.Text>
+      </Flex>
       {!screens.xs ? (
         <Search
           placeholder="Search"
@@ -67,7 +74,7 @@ export default function StudioHeader() {
 
       <Flex gap={16} align={"center"}>
         <Button icon={<UploadOutlined />} onClick={showModal} type="primary">
-          Create
+          Upload
         </Button>
 
         {screens.xs ? (
