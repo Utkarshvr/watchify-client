@@ -98,7 +98,7 @@ export default function BasicInfoScreen() {
                 content={`This is the standard web address for your channel. It includes your unique channel ID, which is the numbers and letters at the end of the URL. `}
               />
               <Input
-                addonBefore="https://www.watchify.com/channel/"
+                addonBefore={location.origin + "/channel/"}
                 placeholder="Handle"
                 value={`${values?.basic?.channelID}`}
                 addonAfter={
