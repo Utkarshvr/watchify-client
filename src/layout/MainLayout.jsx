@@ -41,7 +41,7 @@ const MainLayout = () => {
     >
       <Header
         style={{
-          padding: "1em",
+          padding: 30,
           background: colorBgContainer,
           position: "sticky",
           top: 0,
@@ -57,8 +57,10 @@ const MainLayout = () => {
       <Layout
         style={{
           display: "flex",
-          alignItems: "center",
+          // alignItems: "center",
           justifyContent: "center",
+          background: colorBgContainer,
+          padding: 24,
         }}
       >
         {/* Sider */}

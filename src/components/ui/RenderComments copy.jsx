@@ -4,13 +4,43 @@ import { Link } from "react-router-dom";
 import AddComment from "../input/AddComment";
 import { LikeOutlined } from "@ant-design/icons";
 import { useState } from "react";
+import { addCommentToVideo } from "@/api/apiCalls";
+import { useMessageAPI } from "@/context/Other/MessageProvider";
 
 export default function RenderComments({ comments, videoID, refreshComments }) {
+  const { success, error: errorAPI } = useMessageAPI();
+
+  const [value, setValue] = useState("");
   const [replyStates, setReplyStates] = useState({});
+  const [isPostingComment, setIsPostingComment] = useState(false);
 
-  // console.log({ comments, videoID });
+  const handleChange = (event) => {
+    setValue(event.target.value);
+  };
 
-  console.log("RENDERCOMMENTS...");
+  console.log({ comments, videoID });
+
+  const onSubmit = async (commentId) => {
+    setIsPostingComment(true);
+    try {
+      const data = await addCommentToVideo(
+        videoID,
+        {
+          content: value,
+        },
+        commentId
+      );
+      console.log(data);
+      success("Reply Added");
+      refreshComments();
+    } catch (error) {
+      console.log(error);
+      errorAPI("Couldn't add reply");
+    } finally {
+      setIsPostingComment(false);
+      setReplyStates((prevStates) => ({ ...prevStates, [commentId]: false }));
+    }
+  };
 
   const handleReplyClick = (commentId) => {
     setReplyStates((prevStates) => ({ ...prevStates, [commentId]: true }));
@@ -78,21 +108,22 @@ export default function RenderComments({ comments, videoID, refreshComments }) {
                 <AddComment
                   isUserCommentingorReplying={replyStates[comment._id]}
                   isReply
-                  hideCommentForm={() =>
+                  value={value}
+                  handleChange={handleChange}
+                  hideActions={() =>
                     setReplyStates((prevStates) => ({
                       ...prevStates,
                       [comment._id]: false,
                     }))
                   }
-                  showCommentForm={() =>
+                  showActions={() =>
                     setReplyStates((prevStates) => ({
                       ...prevStates,
                       [comment._id]: true,
                     }))
                   }
-                  commentId={comment._id}
-                  videoID={videoID}
-                  refreshComments={refreshComments}
+                  onSubmit={() => onSubmit(comment._id)}
+                  isPostingComment={isPostingComment}
                 />
               )}
             </Flex>

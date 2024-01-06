@@ -28,7 +28,7 @@ export default function CommentSection({ videoID }) {
       })();
   }, [hasUserCommented, videoID]);
 
-  if (isLoading)
+  if (comments?.length === 0 && isLoading)
     return (
       <Typography.Text strong type="success">
         Loading Comments...

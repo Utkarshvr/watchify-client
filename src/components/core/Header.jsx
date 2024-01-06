@@ -12,6 +12,7 @@ import { useState } from "react";
 import { useSider } from "@/context/Other/SiderProvider";
 import UserMenu from "./UserMenu";
 import { useModal } from "@/context/Other/ModalProvider";
+import UserNotificationMenu from "./UserNotificationMenu";
 
 const boxStyle = {
   width: "100%",
@@ -80,6 +81,7 @@ export default function MainHeader() {
             Upload
           </Button>
         )}
+        <UserNotificationMenu />
         {screens.xs ? (
           <Button
             onClick={() => setShowInput(true)}

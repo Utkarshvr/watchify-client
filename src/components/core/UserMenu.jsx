@@ -2,28 +2,14 @@ import { useAuthUser } from "@/context/Auth/AuthProvider";
 import { logout } from "@/helpers/GoogleAuth";
 import { gray } from "@ant-design/colors";
 import { LogoutOutlined } from "@ant-design/icons";
-import { Avatar, Button, Flex, Menu } from "antd";
-import { useState } from "react";
+import { Avatar, Dropdown, Flex } from "antd";
 
 export default function UserMenu() {
   const user = useAuthUser();
-  const [current, setCurrent] = useState("");
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const onClick = (e) => {
-    console.log("click ", e);
-    setCurrent(e.key);
-  };
-  const showMenu = () => {
-    setIsMenuOpen((prev) => !prev);
-  };
 
   const items = [
     {
-      label: (
-        <Button onClick={logout} type="text">
-          Logout
-        </Button>
-      ),
+      label: <div onClick={logout}>Logout</div>,
       key: "logout",
       icon: <LogoutOutlined />,
     },
@@ -35,13 +21,19 @@ export default function UserMenu() {
         position: "relative",
       }}
     >
-      <Avatar
-        style={{ cursor: "pointer", border: "2px solid", borderColor: gray[6] }}
-        onClick={showMenu}
-        size={"large"}
-        src={user?.picture}
-      />
-      <Menu
+      <Dropdown menu={{ items }} trigger={["click"]}>
+        <Avatar
+          style={{
+            cursor: "pointer",
+            border: "2px solid",
+            borderColor: gray[6],
+          }}
+          size={"large"}
+          src={user?.picture}
+        />
+      </Dropdown>
+
+      {/* <Menu
         style={{
           position: "absolute",
           top: "100%",
@@ -56,7 +48,7 @@ export default function UserMenu() {
         onClick={onClick}
         selectedKeys={[current]}
         items={items}
-      />
+      /> */}
     </Flex>
   );
 }

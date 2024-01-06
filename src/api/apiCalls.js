@@ -190,3 +190,10 @@ export async function getWatchHistory() {
     return { data: null, error };
   }
 }
+
+export async function getUsersNotifications(isRead) {
+  const url = `${API_URL}/user/me/notifications?isRead=${Boolean(isRead)}`;
+  const data = await axiosInstance.get(url);
+
+  return data;
+}
