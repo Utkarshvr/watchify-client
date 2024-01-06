@@ -7,7 +7,7 @@ import { useState } from "react";
 import { addCommentToVideo } from "@/api/apiCalls";
 import { useMessageAPI } from "@/context/Other/MessageProvider";
 
-export default function RenderComments({ comments, videoID }) {
+export default function RenderComments({ comments, videoID, refreshComments }) {
   const { success, error: errorAPI } = useMessageAPI();
 
   const [value, setValue] = useState("");
@@ -24,7 +24,7 @@ export default function RenderComments({ comments, videoID }) {
     setIsPostingComment(true);
     try {
       const data = await addCommentToVideo(
-        "6597ecdb3dc5600f638e1bc9",
+        videoID,
         {
           content: value,
         },
@@ -32,6 +32,7 @@ export default function RenderComments({ comments, videoID }) {
       );
       console.log(data);
       success("Reply Added");
+      refreshComments();
     } catch (error) {
       console.log(error);
       errorAPI("Couldn't add reply");
@@ -127,7 +128,12 @@ export default function RenderComments({ comments, videoID }) {
               )}
             </Flex>
             {comment?.replies?.length > 0 && (
-              <RenderComments key={comment?._id} comments={comment?.replies} />
+              <RenderComments
+                key={comment?._id}
+                videoID={videoID}
+                comments={comment?.replies}
+                refreshComments={refreshComments}
+              />
             )}
           </Flex>
         </Flex>

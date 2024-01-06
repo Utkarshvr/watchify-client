@@ -7,24 +7,26 @@ import RenderComments from "../ui/RenderComments";
 export default function CommentSection({ videoID }) {
   const [comments, setComments] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [hasUserCommented, setHasUserCommented] = useState(false);
 
-  console.log({ videoID });
+  const refreshComments = () => setHasUserCommented((prev) => !prev);
 
   useEffect(() => {
-    (async () => {
-      setIsLoading(true);
-      try {
-        const { data } = await getCommentsOfVideo("6597ecdb3dc5600f638e1bc9");
-        console.log(data);
+    if (videoID)
+      (async () => {
+        setIsLoading(true);
+        try {
+          const { data } = await getCommentsOfVideo(videoID);
+          console.log(data);
 
-        setComments(data?.data?.comments || []);
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setIsLoading(false);
-      }
-    })();
-  }, []);
+          setComments(data?.data?.comments || []);
+        } catch (error) {
+          console.log(error);
+        } finally {
+          setIsLoading(false);
+        }
+      })();
+  }, [hasUserCommented, videoID]);
 
   if (isLoading)
     return (
@@ -38,11 +40,15 @@ export default function CommentSection({ videoID }) {
         {comments?.length} {comments?.length === 1 ? "Comment" : "Comments"}
       </Typography.Text>
 
-      <AddComment videoID={videoID} />
+      <AddComment videoID={videoID} refreshComments={refreshComments} />
 
       {/* All Comments */}
       <Flex gap={16} vertical>
-        <RenderComments videoID={videoID} comments={comments} />
+        <RenderComments
+          videoID={videoID}
+          refreshComments={refreshComments}
+          comments={comments}
+        />
       </Flex>
     </Flex>
   );
