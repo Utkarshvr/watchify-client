@@ -18,7 +18,7 @@ export default function RenderComments({ comments, videoID }) {
     setValue(event.target.value);
   };
 
-  console.log({ videoID });
+  console.log({ comments, videoID });
 
   const onSubmit = async (commentId) => {
     setIsPostingComment(true);
