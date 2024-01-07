@@ -1,4 +1,4 @@
-import { Flex, Typography } from "antd";
+import { Flex, Grid, Typography } from "antd";
 import AddComment from "../input/AddComment";
 import { useEffect, useState } from "react";
 import { getCommentsOfVideo } from "@/api/apiCalls";
@@ -10,6 +10,8 @@ export default function CommentSection({ videoID }) {
   const [hasUserCommented, setHasUserCommented] = useState(false);
 
   const refreshComments = () => setHasUserCommented((prev) => !prev);
+
+  const screens = Grid.useBreakpoint();
 
   useEffect(() => {
     if (videoID)

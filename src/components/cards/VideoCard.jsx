@@ -1,4 +1,4 @@
-import { Avatar, Col, Flex, Image, Typography } from "antd";
+import { Avatar, Col, Flex, Grid, Image, Typography } from "antd";
 import { Link } from "react-router-dom";
 import { formatDistanceToNow } from "date-fns";
 import { gray } from "@ant-design/colors";
@@ -14,6 +14,8 @@ export default function VideoCard({
 }) {
   const isUsedInPlaylist = usage === "playlist";
 
+  const screens = Grid.useBreakpoint();
+
   return (
     <Col
       style={{
@@ -25,7 +27,14 @@ export default function VideoCard({
         borderRadius: 12,
       }}
       className="gutter-row"
-      span={vertical ? 24 : 6}
+      span={
+        // vertical ? 24 : screens.xs ? 24 : screens.sm ? 12 : screens.md ? 6 : 6
+        vertical ? 24 : 6
+      }
+      xs={24}
+      sm={12}
+      md={8}
+      lg={6}
     >
       <Link
         to={
@@ -47,6 +56,7 @@ export default function VideoCard({
               // maxWidth: isUsedInPlaylist ? 200 : 400,
               borderRadius: 12,
               padding: 4,
+              width: "100%",
             }}
             vertical={isUsedInPlaylist ? false : true}
             gap={6}
@@ -56,10 +66,17 @@ export default function VideoCard({
             <Image
               src={video?.thumbnail}
               preview={false}
+              width={isUsedInPlaylist ? 200 : "100%"}
               style={{
                 // maxWidth: "100%",
                 borderRadius: 12,
-                maxWidth: isUsedInPlaylist ? 200 : "100%",
+                // maxWidth: isUsedInPlaylist ? 200 : "100%",
+                // maxHeight: 200,
+                width: isUsedInPlaylist ? 200 : "100%",
+                height: 250,
+                objectFit: screens.xs ? "cover" : "contain",
+                // border: "4px solid #fff",
+                // background: "#151515",
               }}
             />
 

@@ -6,7 +6,7 @@ import PlaylistsFeed from "@/layout/PlaylistsFeed";
 import VideoFeed from "@/layout/VideoFeed";
 import { gray } from "@ant-design/colors";
 import { EditOutlined, RightOutlined } from "@ant-design/icons";
-import { Button, Flex, Image, Tabs, Typography } from "antd";
+import { Avatar, Button, Flex, Grid, Image, Tabs, Typography } from "antd";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link, useParams, useSearchParams } from "react-router-dom";
@@ -28,6 +28,8 @@ export default function ChannelPage() {
 
   const [searchParams, setSearchParams] = useSearchParams();
   const activeTab = searchParams.get("tab");
+
+  const screens = Grid.useBreakpoint();
 
   useEffect(() => {
     if (user_handle)
@@ -93,13 +95,13 @@ export default function ChannelPage() {
 
   return (
     <>
-      <Flex style={{ padding: 24 }} vertical gap={24}>
+      <Flex vertical gap={24}>
         {/* Banner */}
         {channel?.banner_image && (
           <Flex
             style={{
               borderRadius: 24,
-              height: 250,
+              height: screens.xs ? 150 : 250,
               background: gray[6],
             }}
           >
@@ -117,16 +119,21 @@ export default function ChannelPage() {
         )}
         {/* Info */}
         <Flex gap={16}>
-          <Image
-            style={{ borderRadius: "100%" }}
-            src={channel?.picture}
-            width={200}
-            preview={false}
-          />
+          {!screens.xs && (
+            <Image
+              style={{ borderRadius: "100%" }}
+              src={channel?.picture}
+              width={200}
+              preview={false}
+            />
+          )}
           <Flex vertical gap={4} style={{ padding: "1em 0" }}>
-            <Typography.Title style={{ margin: 0 }}>
-              {channel?.name}
-            </Typography.Title>
+            <Flex gap={8} align="center">
+              {screens.xs && <Avatar src={channel?.picture} size={"large"} />}
+              <Typography.Title style={{ margin: 0 }}>
+                {channel?.name}
+              </Typography.Title>
+            </Flex>
             <Typography.Text type="secondary">
               {`@${channel?.user_handle}`}
               {" | "}

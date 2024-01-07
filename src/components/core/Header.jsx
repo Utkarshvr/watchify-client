@@ -38,9 +38,6 @@ export default function MainHeader() {
         justify={"space-between"}
         align={"center"}
       >
-        <Typography.Text strong style={{ fontSize: 20 }}>
-          Watchify
-        </Typography.Text>
         <Search
           placeholder="Search"
           allowClear
@@ -59,8 +56,10 @@ export default function MainHeader() {
   return (
     <Flex style={boxStyle} gap={36} justify={"space-between"} align={"center"}>
       <Flex gap={24}>
-        <Button onClick={toggleSider} type="text" icon={<MenuOutlined />} />
-        <Typography.Text strong style={{ fontSize: 20 }}>
+        {!screens.xs && (
+          <Button onClick={toggleSider} type="text" icon={<MenuOutlined />} />
+        )}
+        <Typography.Text strong style={{ fontSize: 20, width: "max-content" }}>
           Watchify
         </Typography.Text>
       </Flex>
@@ -76,7 +75,7 @@ export default function MainHeader() {
       ) : null}
 
       <Flex gap={8} align={"center"}>
-        {user?._id && (
+        {user?._id && !screens.xs && (
           <Button icon={<UploadOutlined />} onClick={showModal} type="primary">
             Upload
           </Button>

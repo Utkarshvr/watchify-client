@@ -1,6 +1,6 @@
 import MainSider from "@/components/core/MainSider";
 import MainHeader from "@/components/core/Header";
-import { Layout, theme } from "antd";
+import { Grid, Layout, theme } from "antd";
 import { Outlet } from "react-router-dom";
 import { useLayoutEffect } from "react";
 import { useSider } from "@/context/Other/SiderProvider";
@@ -10,6 +10,7 @@ const { Header } = Layout;
 
 const MainLayout = () => {
   const { collapsed } = useSider();
+  const screens = Grid.useBreakpoint();
 
   const {
     token: { colorBgContainer, screenXXL },
@@ -22,16 +23,23 @@ const MainLayout = () => {
 
     const headerHeight = header.offsetHeight;
     const siderWidth = sider.offsetWidth;
-    sider.style.height = `calc(100vh - ${headerHeight}px)`;
-    content.style.marginLeft = `${siderWidth}px`;
-    content.style.marginLeft = `${collapsed ? 80 : 200}px`;
+    sider.style.height = screens.xs
+      ? "auto"
+      : `calc(100vh - ${headerHeight}px)`;
+
+    sider.style.width = screens.xs ? "100vw" : `auto`;
+    sider.style.maxWidth = "none";
+
+    content.style.marginLeft = screens.xs
+      ? "auto"
+      : `${collapsed ? 80 : 200}px`;
 
     console.log({
       headerHeight,
       siderWidth,
       siderHeight: sider.style.height,
     });
-  }, [collapsed]);
+  }, [collapsed, screens.xs]);
 
   return (
     <Layout

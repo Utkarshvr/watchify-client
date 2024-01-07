@@ -1,4 +1,4 @@
-import { Layout, Menu } from "antd";
+import { Grid, Layout, Menu } from "antd";
 import {
   ClockCircleOutlined,
   EditOutlined,
@@ -27,6 +27,7 @@ export default function MainSider() {
   const [playlists, setPlaylists] = useState([]);
 
   const user = useAuthUser();
+  const screens = Grid.useBreakpoint();
 
   useEffect(() => {
     (async () => {
@@ -42,122 +43,179 @@ export default function MainSider() {
   };
 
   const items = [
-    getMenuItem(<Link to={""}>Home</Link>, "Home", <HomeOutlined />),
     getMenuItem(
-      <Link to={"studio"}>Studio</Link>,
-      "Studio",
-      <LayoutOutlined />
-    ),
-    getMenuItem(
-      <Link to={"subscription"}>Subscription</Link>,
-      "Subscription",
-      <PlaySquareOutlined />
-    ),
-    getMenuItem(
-      <Link to={"customization"}>You</Link>,
-      "customization",
-      <UserOutlined />,
-      [
-        getMenuItem(
-          <Link to={`/channel/@${user?.user_handle}`}>Your Channel</Link>,
-          "Your Channel",
-          <UserOutlined />
-        ),
-        getMenuItem(
-          <Link to={"/studio/content"}>Your Videos</Link>,
-          "Your Videos",
-          <PlayCircleOutlined />
-        ),
-        getMenuItem(
-          <Link to={"/history"}>History</Link>,
-          "History",
-          <HistoryOutlined />
-        ),
-        getMenuItem(
-          <Link
-            to={`/playlist/${
-              playlists?.find(
-                (playlist) =>
-                  playlist?.isDefault && playlist?.title === "Watch Later"
-              )?._id
-            }`}
-          >
-            Watch Later
-          </Link>,
+      <Link to={""}>
+        <HomeOutlined />
+      </Link>,
+      "Home",
 
-          "Watch Later",
-          <ClockCircleOutlined />
-        ),
-        getMenuItem(
-          <Link
-            to={`/playlist/${
-              playlists?.find(
-                (playlist) =>
-                  playlist?.isDefault && playlist?.title === "Liked Videos"
-              )?._id
-            }`}
-          >
-            Liked Videos
-          </Link>,
-          "Liked Videos",
-          <LikeOutlined />
-        ),
-        getMenuItem(
-          <>
-            Playlist (
-            {
-              playlists.filter((playlist) => !playlist?.isDefault && true)
-                .length
-            }
-            )
-          </>,
-          "Playlist",
-          <PlaySquareOutlined />,
-          playlists
-            .map(
-              (playlist) =>
-                !playlist?.isDefault &&
-                getMenuItem(
-                  <Link to={`/playlist/${playlist?._id}`}>
-                    {playlist?.title}
-                  </Link>,
-                  playlist?.title,
-                  <UnorderedListOutlined />
+      null,
+      null,
+      null,
+      screens.xs
+    ),
+    getMenuItem(
+      <Link to={"studio"}>
+        {" "}
+        <LayoutOutlined />
+      </Link>,
+      "Studio",
+      null,
+      null,
+      null,
+      screens.xs
+    ),
+    getMenuItem(
+      <Link to={"subscription"}>
+        <PlaySquareOutlined />
+      </Link>,
+      "Subscription",
+      null,
+      null,
+      null,
+      screens.xs
+    ),
+    getMenuItem(
+      <Link to={"customization"}>
+        {" "}
+        <UserOutlined />{" "}
+      </Link>,
+      "customization",
+      null,
+      !screens.xs
+        ? [
+            getMenuItem(
+              <Link to={`/channel/@${user?.user_handle}`}>Your Channel</Link>,
+              "Your Channel",
+              <UserOutlined />
+            ),
+            getMenuItem(
+              <Link to={"/studio/content"}>Your Videos</Link>,
+              "Your Videos",
+              <PlayCircleOutlined />
+            ),
+            getMenuItem(
+              <Link to={"/history"}>History</Link>,
+              "History",
+              <HistoryOutlined />
+            ),
+            getMenuItem(
+              <Link
+                to={`/playlist/${
+                  playlists?.find(
+                    (playlist) =>
+                      playlist?.isDefault && playlist?.title === "Watch Later"
+                  )?._id
+                }`}
+              >
+                Watch Later
+              </Link>,
+
+              "Watch Later",
+              <ClockCircleOutlined />
+            ),
+            getMenuItem(
+              <Link
+                to={`/playlist/${
+                  playlists?.find(
+                    (playlist) =>
+                      playlist?.isDefault && playlist?.title === "Liked Videos"
+                  )?._id
+                }`}
+              >
+                Liked Videos
+              </Link>,
+              "Liked Videos",
+              <LikeOutlined />
+            ),
+            getMenuItem(
+              <>
+                Playlist (
+                {
+                  playlists.filter((playlist) => !playlist?.isDefault && true)
+                    .length
+                }
                 )
-            )
-            .filter(Boolean)
-        ),
-      ]
+              </>,
+              "Playlist",
+              <PlaySquareOutlined />,
+              playlists
+                .map(
+                  (playlist) =>
+                    !playlist?.isDefault &&
+                    getMenuItem(
+                      <Link to={`/playlist/${playlist?._id}`}>
+                        {playlist?.title}
+                      </Link>,
+                      playlist?.title,
+                      <UnorderedListOutlined />
+                    )
+                )
+                .filter(Boolean)
+            ),
+          ]
+        : null,
+      null,
+      screens.xs
     ),
   ];
 
   return (
-    <Sider
-      id="main-sider"
-      collapsible
-      collapsed={collapsed}
-      onCollapse={toggleSider}
-      theme="light"
-      style={{
-        overflow: "auto",
-        position: "fixed",
-        left: 0,
-        bottom: 0,
-      }}
-    >
-      <div className="demo-logo-vertical" />
+    <>
+      <Sider
+        id="main-sider"
+        collapsible
+        collapsed={collapsed}
+        onCollapse={toggleSider}
+        theme="light"
+        style={{
+          overflow: "auto",
+          position: "fixed",
+          left: 0,
+          bottom: 0,
+          width: screens.xs ? "100vw" : "auto",
+          zIndex: 100,
+          maxWidth: "none",
+          ...(screens.xs ? { display: "none" } : {}),
+        }}
+      >
+        <div className="demo-logo-vertical" />
+        <Menu
+          onClick={onClick}
+          style={{
+            width: "100%",
+            minHeight: "100%",
+          }}
+          defaultSelectedKeys={["Home"]}
+          defaultOpenKeys={["Home"]}
+          selectedKeys={[current]}
+          mode={screens.xs ? "horizontal" : "vertical"}
+          items={items}
+        />
+      </Sider>
+
+      {/* Bottom Bar */}
       <Menu
         onClick={onClick}
         style={{
           width: "100%",
-          minHeight: "100%",
+          // minHeight: "100%",
+          display: screens.xs ? "flex" : "none",
+          justifyContent: "center",
+
+          position: "fixed",
+          left: 0,
+          bottom: 0,
+          zIndex: 10,
+
+          padding: 12,
         }}
         defaultSelectedKeys={["Home"]}
         defaultOpenKeys={["Home"]}
         selectedKeys={[current]}
-        mode="inline"
+        mode="horizontal"
         items={items}
       />
-    </Sider>
+    </>
   );
 }

@@ -41,6 +41,10 @@ export default function PlaylistsFeed({ channelID, vertical }) {
           className="gutter-row"
           span={vertical ? 24 : 6}
           style={{ marginBottom: 16 }}
+          xs={24}
+          sm={12}
+          md={8}
+          lg={6}
         >
           <PlaylistCard playlist={playlist} />
         </Col>

@@ -1,12 +1,30 @@
 import { Link } from "react-router-dom";
 
-export function getMenuItem(label, key, icon, children, type) {
+export function getMenuItem(
+  label,
+  key,
+  icon,
+  children,
+  type,
+  isUsedInBottomBar
+) {
   return {
     key,
     icon,
     children,
     label,
     type,
+    ...(isUsedInBottomBar
+      ? {
+          style: {
+            display: "flex",
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+            // padding: 12,
+          },
+        }
+      : {}),
   };
 }
 

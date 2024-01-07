@@ -1,6 +1,6 @@
 import { useParams, useSearchParams } from "react-router-dom";
 import VideoCardLong from "@/components/cards/VideoCardLong";
-import { Flex, Typography } from "antd";
+import { Flex, Grid, Typography } from "antd";
 import VideoFeed from "@/layout/VideoFeed";
 import { useEffect, useState } from "react";
 import { getAllVideos } from "@/api/apiCalls";
@@ -62,18 +62,18 @@ export default function VideoPage() {
       })();
   }, [playlistID]);
 
-  console.log({ videoUUID });
+  const screens = Grid.useBreakpoint();
 
   return (
     <>
-      <Flex style={{ position: "relative" }} gap={24}>
-        <Flex vertical gap={20} flex={0.7}>
+      <Flex style={{ position: "relative" }} vertical={screens.xs} gap={24}>
+        <Flex vertical gap={20} flex={screens.xs ? 1 : 0.7}>
           <Flex>
             <VideoCardLong videoID={videoID} />
           </Flex>
           <CommentSection videoID={videoUUID} />
         </Flex>
-        <Flex vertical flex={0.3}>
+        <Flex vertical flex={screens.xs ? 1 : 0.3}>
           {isLoading ? (
             // <Loading />
             <p>LOADING...</p>
