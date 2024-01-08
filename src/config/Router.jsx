@@ -13,6 +13,7 @@ import ChannelPage from "@/pages/channel/ChannelPage";
 import PlaylistPage from "@/pages/playlist/PlaylistPage";
 import HistoryPage from "@/pages/history/HistoryPage";
 import NewLayoutPage from "@/layout/rough/NewLayoutPage";
+import SubscriptionPage from "@/pages/subscription/SubscriptionPage";
 
 const router = createBrowserRouter([
   {
@@ -26,6 +27,10 @@ const router = createBrowserRouter([
           {
             path: "",
             element: <HomePage />,
+          },
+          {
+            path: "subscription",
+            element: <SubscriptionPage />,
           },
           {
             path: "/videos/:videoID",

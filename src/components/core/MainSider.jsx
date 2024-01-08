@@ -44,44 +44,38 @@ export default function MainSider() {
 
   const items = [
     getMenuItem(
-      <Link to={""}>
-        <HomeOutlined />
-      </Link>,
+      <Link to={""}>{screens.xs ? <HomeOutlined /> : "Home"}</Link>,
       "Home",
 
-      null,
+      screens.xs ? null : <HomeOutlined />,
       null,
       null,
       screens.xs
     ),
     getMenuItem(
-      <Link to={"studio"}>
-        {" "}
-        <LayoutOutlined />
-      </Link>,
+      <Link to={"studio"}>{screens.xs ? <LayoutOutlined /> : "Studio"}</Link>,
       "Studio",
-      null,
+      screens.xs ? null : <LayoutOutlined />,
       null,
       null,
       screens.xs
     ),
     getMenuItem(
       <Link to={"subscription"}>
-        <PlaySquareOutlined />
+        {screens.xs ? <PlaySquareOutlined /> : "Subscription"}
       </Link>,
       "Subscription",
-      null,
+      screens.xs ? null : <PlaySquareOutlined />,
       null,
       null,
       screens.xs
     ),
     getMenuItem(
       <Link to={"customization"}>
-        {" "}
-        <UserOutlined />{" "}
+        {screens.xs ? <UserOutlined /> : "Customization"}
       </Link>,
       "customization",
-      null,
+      screens.xs ? null : <UserOutlined />,
       !screens.xs
         ? [
             getMenuItem(

@@ -197,3 +197,4 @@ export async function getUsersNotifications(isRead) {
 
   return data;
 }
+export default axiosInstance;
