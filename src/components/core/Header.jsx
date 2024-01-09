@@ -13,6 +13,7 @@ import { useSider } from "@/context/Other/SiderProvider";
 import UserMenu from "./UserMenu";
 import { useModal } from "@/context/Other/ModalProvider";
 import UserNotificationMenu from "./UserNotificationMenu";
+import UploadVideoBtn from "../button/UploadVideoBtn";
 
 const boxStyle = {
   width: "100%",
@@ -24,7 +25,6 @@ export default function MainHeader() {
   const [showInput, setShowInput] = useState(false);
 
   const user = useAuthUser();
-  const { showModal } = useModal();
 
   const screens = useBreakpoint();
 
@@ -75,11 +75,7 @@ export default function MainHeader() {
       ) : null}
 
       <Flex gap={8} align={"center"}>
-        {user?._id && !screens.xs && (
-          <Button icon={<UploadOutlined />} onClick={showModal} type="primary">
-            Upload
-          </Button>
-        )}
+        {user?._id && !screens.xs && <UploadVideoBtn />}
         <UserNotificationMenu />
         {screens.xs ? (
           <Button
