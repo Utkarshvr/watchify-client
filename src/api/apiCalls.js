@@ -192,8 +192,20 @@ export async function getWatchHistory() {
 }
 
 export async function getUsersNotifications(isRead) {
-  const url = `${API_URL}/user/me/notifications?isRead=${Boolean(isRead)}`;
+  const url = isRead
+    ? `${API_URL}/user/me/notifications?isRead=${isRead}`
+    : `${API_URL}/user/me/notifications`;
+
+  console.log({ notif_urL: url });
   const data = await axiosInstance.get(url);
+
+  return data;
+}
+
+export async function markAllUsersNotificationsAsRead() {
+  const url = `${API_URL}/user/me/notifications/markasread`;
+
+  const data = await axiosInstance.post(url);
 
   return data;
 }

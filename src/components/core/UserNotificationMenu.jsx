@@ -4,6 +4,7 @@ import FakeList from "./FakeList";
 import { useEffect, useState } from "react";
 import { useAuthUser } from "@/context/Auth/AuthProvider";
 import { getUsersNotifications } from "@/api/apiCalls";
+import NotificationsList from "./NotificationsList";
 
 export default function UserNotificationMenu() {
   const user = useAuthUser();
@@ -14,7 +15,7 @@ export default function UserNotificationMenu() {
     if (user?._id) {
       (async () => {
         try {
-          const data = await getUsersNotifications(false);
+          const data = await getUsersNotifications("false");
           console.log(data);
 
           setUnreadNotifications(data?.data?.notifications);
@@ -42,7 +43,9 @@ export default function UserNotificationMenu() {
           onClick={() => setOpenNotifications((prev) => !prev)}
         />
       </Badge>
-      {openNotifications && <FakeList />}
+      {openNotifications && (
+        <NotificationsList unreadNotifications={unreadNotifications} />
+      )}
     </div>
   );
 }
