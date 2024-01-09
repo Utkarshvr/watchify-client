@@ -14,6 +14,7 @@ import UserMenu from "./UserMenu";
 import { useModal } from "@/context/Other/ModalProvider";
 import UserNotificationMenu from "./UserNotificationMenu";
 import UploadVideoBtn from "../button/UploadVideoBtn";
+import { Link } from "react-router-dom";
 
 const boxStyle = {
   width: "100%",
@@ -59,9 +60,14 @@ export default function MainHeader() {
         {!screens.xs && (
           <Button onClick={toggleSider} type="text" icon={<MenuOutlined />} />
         )}
-        <Typography.Text strong style={{ fontSize: 20, width: "max-content" }}>
-          Watchify
-        </Typography.Text>
+        <Link style={{ width: "max-content" }} to={"/"}>
+          <Typography.Text
+            strong
+            style={{ fontSize: 20, width: "max-content" }}
+          >
+            Watchify
+          </Typography.Text>
+        </Link>
       </Flex>
 
       {!screens.xs ? (
