@@ -1,4 +1,4 @@
-import useModal from "antd/es/modal/useModal";
+import { useModal } from "@/context/Other/ModalProvider";
 import { UploadOutlined } from "@ant-design/icons";
 import { Button } from "antd";
 

@@ -23,14 +23,19 @@ const MainLayout = () => {
 
     const headerHeight = header.offsetHeight;
     const siderWidth = sider.offsetWidth;
-    sider.style.height = screens.xs
+    sider.style.height = !screens.md
       ? "auto"
       : `calc(100vh - ${headerHeight}px)`;
 
-    sider.style.width = screens.xs ? "100vw" : `auto`;
+    sider.style.width = !screens.md
+      ? "100vw"
+      : JSON.parse(localStorage.getItem("sider-collapsed"))
+      ? `80px`
+      : `auto`;
+
     sider.style.maxWidth = "none";
 
-    content.style.marginLeft = screens.xs
+    content.style.marginLeft = !screens.md
       ? "auto"
       : `${collapsed ? 80 : 200}px`;
 
@@ -39,7 +44,7 @@ const MainLayout = () => {
       siderWidth,
       siderHeight: sider.style.height,
     });
-  }, [collapsed, screens.xs]);
+  }, [collapsed, screens.md]);
 
   return (
     <Layout
@@ -68,7 +73,7 @@ const MainLayout = () => {
           // alignItems: "center",
           justifyContent: "center",
           background: colorBgContainer,
-          padding: 24,
+          padding: !screens.md ? 8 : screens.sm ? 16 : 24,
         }}
       >
         {/* Sider */}

@@ -66,7 +66,7 @@ export default function VideoPage() {
 
   return (
     <>
-      <Flex style={{ position: "relative" }} vertical={screens.xs} gap={24}>
+      <Flex style={{ position: "relative" }} vertical={!screens.md} gap={24}>
         <Flex vertical gap={20} flex={screens.xs ? 1 : 0.7}>
           <Flex>
             <VideoCardLong videoID={videoID} />

@@ -27,14 +27,11 @@ export default function VideoCard({
         borderRadius: 12,
       }}
       className="gutter-row"
-      span={
-        // vertical ? 24 : screens.xs ? 24 : screens.sm ? 12 : screens.md ? 6 : 6
-        vertical ? 24 : 6
-      }
-      xs={24}
-      sm={12}
-      md={8}
-      lg={6}
+      span={vertical ? 24 : 6}
+      xs={vertical ? null : 24}
+      sm={vertical ? null : 12}
+      md={vertical ? null : 8}
+      lg={vertical ? null : 6}
     >
       <Link
         to={
@@ -44,6 +41,7 @@ export default function VideoCard({
               }`
             : `/videos/${video?.videoID}`
         }
+        style={{ minWidth: "max-content" }}
       >
         <Flex align="center" gap={4}>
           {isUsedInPlaylist ? (
@@ -92,7 +90,14 @@ export default function VideoCard({
                 </Link>
               )}
               <Flex vertical>
-                <Typography.Text strong>{video?.title}</Typography.Text>
+                <Typography.Text
+                  // style={{
+                  //   minWidth: "max-content",
+                  // }}
+                  strong
+                >
+                  {video?.title}
+                </Typography.Text>
                 <Link to={`/channel/@${video?.creator?.user_handle}`}>
                   <Typography.Text type="secondary">
                     {video?.creator?.name}

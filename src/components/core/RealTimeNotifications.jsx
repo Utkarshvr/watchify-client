@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { io } from "socket.io-client";
 
 export default function RealTimeNotifications() {
-  const { openNotification } = useNotificationAPI();
+  const { openNotification, refreshNotifications } = useNotificationAPI();
 
   useEffect(() => {
     // Connect to the socket server
@@ -18,6 +18,7 @@ export default function RealTimeNotifications() {
       console.log("Received message:", notice);
       // Update your React component state or perform any other actions
       openNotification(notice);
+      refreshNotifications();
     });
 
     // Cleanup the socket connection when the component unmounts

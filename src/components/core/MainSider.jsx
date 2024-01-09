@@ -170,8 +170,9 @@ export default function MainSider() {
           width: screens.xs ? "100vw" : "auto",
           zIndex: 100,
           maxWidth: "none",
-          ...(screens.xs ? { display: "none" } : {}),
+          ...(!screens.md ? { display: "none" } : {}),
         }}
+        collapsedWidth={80}
       >
         <div className="demo-logo-vertical" />
         <Menu
@@ -183,7 +184,7 @@ export default function MainSider() {
           defaultSelectedKeys={["Home"]}
           defaultOpenKeys={["Home"]}
           selectedKeys={[current]}
-          mode={screens.xs ? "horizontal" : "vertical"}
+          mode={!screens.md ? "horizontal" : "vertical"}
           items={items}
         />
       </Sider>
@@ -194,7 +195,7 @@ export default function MainSider() {
         style={{
           width: "100%",
           // minHeight: "100%",
-          display: screens.xs ? "flex" : "none",
+          display: !screens.md ? "flex" : "none",
           justifyContent: "center",
 
           position: "fixed",

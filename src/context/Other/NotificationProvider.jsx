@@ -1,10 +1,12 @@
 import { notification } from "antd";
-import { createContext, useContext } from "react";
+import { createContext, useContext, useState } from "react";
 
-const NotificationContext = createContext();
+const NotificationDATAContext = createContext();
+const NotificationAPIContext = createContext();
 
 export default function NotificationProvider({ children }) {
   const [notificationAPI, contextHolder] = notification.useNotification();
+  const [fetchAgain, setFetchAgain] = useState(false);
 
   const openNotification = (notice) => {
     notificationAPI[notice?.type || "info"]({
@@ -13,12 +15,19 @@ export default function NotificationProvider({ children }) {
     });
   };
 
+  const refreshNotifications = () => setFetchAgain((prev) => !prev);
+
   return (
-    <NotificationContext.Provider value={{ openNotification }}>
-      {contextHolder}
-      {children}
-    </NotificationContext.Provider>
+    <NotificationDATAContext.Provider value={{ fetchAgain }}>
+      <NotificationAPIContext.Provider
+        value={{ openNotification, refreshNotifications }}
+      >
+        {contextHolder}
+        {children}
+      </NotificationAPIContext.Provider>
+    </NotificationDATAContext.Provider>
   );
 }
 
-export const useNotificationAPI = () => useContext(NotificationContext);
+export const useNotificationAPI = () => useContext(NotificationAPIContext);
+export const useNotificationData = () => useContext(NotificationDATAContext);

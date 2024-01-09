@@ -5,11 +5,14 @@ import { useEffect, useState } from "react";
 import { useAuthUser } from "@/context/Auth/AuthProvider";
 import { getUsersNotifications } from "@/api/apiCalls";
 import NotificationsList from "./notification/NotificationsList";
+import { useNotificationData } from "@/context/Other/NotificationProvider";
 
 export default function UserNotificationMenu() {
   const user = useAuthUser();
   const [openNotifications, setOpenNotifications] = useState(false);
   const [unreadNotifications, setUnreadNotifications] = useState([]);
+
+  const { fetchAgain } = useNotificationData();
 
   useEffect(() => {
     if (user?._id) {
@@ -24,9 +27,7 @@ export default function UserNotificationMenu() {
         }
       })();
     }
-  }, [user?._id]);
-
-  console.log(`I have ${unreadNotifications?.length} unread notificatoins`);
+  }, [user?._id, fetchAgain]);
 
   return (
     <div style={{ position: "relative" }}>

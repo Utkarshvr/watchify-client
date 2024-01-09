@@ -139,7 +139,10 @@ export default function VideoCardLong({ videoID }) {
                 />
               </Link>
               <Flex vertical>
-                <Link to={`/channel/@${video?.creator?.user_handle}`}>
+                <Link
+                  style={{ minWidth: "max-content" }}
+                  to={`/channel/@${video?.creator?.user_handle}`}
+                >
                   <Typography.Text
                     style={{ fontSize: 14 }}
                     strong
