@@ -12,8 +12,6 @@ import { useModal } from "@/context/Other/ModalProvider";
 import { useFormik } from "formik";
 import TextArea from "antd/es/input/TextArea";
 import { PlusCircleOutlined, UploadOutlined } from "@ant-design/icons";
-import { API_URL } from "@/config/api.routes";
-import axios from "axios";
 import { useAuthUser } from "@/context/Auth/AuthProvider";
 import { useEffect, useState } from "react";
 import { useMessageAPI } from "@/context/Other/MessageProvider";
@@ -75,6 +73,8 @@ const UploadVideoModal = () => {
     },
     onSubmit: async (values, { resetForm }) => {
       setIsUploading(true);
+      closeModal();
+
       try {
         const formData = createVideoFormData(values);
 
@@ -82,7 +82,6 @@ const UploadVideoModal = () => {
 
         console.log(data);
         resetForm();
-        closeModal();
         success("Video Uploaded Succesfully");
       } catch (error) {
         console.log(error);
