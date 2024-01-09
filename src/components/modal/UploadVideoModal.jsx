@@ -263,7 +263,7 @@ const UploadVideoModal = () => {
                       type="dashed"
                       style={{
                         height: "100%",
-                        width: "350px",
+                        width: !screens.md ? 250 : "350px",
                         padding: "2em 4em",
                       }}
                     >
@@ -316,7 +316,7 @@ const UploadVideoModal = () => {
                       type="dashed"
                       style={{
                         height: "100%",
-                        width: "350px",
+                        width: !screens.md ? 250 : "350px",
                         padding: "2em 4em",
                       }}
                     >
