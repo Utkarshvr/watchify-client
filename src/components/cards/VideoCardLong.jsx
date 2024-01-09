@@ -10,7 +10,7 @@ import {
   PlusCircleOutlined,
   ShareAltOutlined,
 } from "@ant-design/icons";
-import { Avatar, Button, Flex, Typography } from "antd";
+import { Avatar, Button, Flex, Grid, Typography } from "antd";
 import { formatDistanceToNow } from "date-fns";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
@@ -96,6 +96,8 @@ export default function VideoCardLong({ videoID }) {
     }
   }
 
+  const screens = Grid.useBreakpoint();
+
   return isLoading && !video ? (
     <Loading />
   ) : (
@@ -129,33 +131,40 @@ export default function VideoCardLong({ videoID }) {
           </Typography.Text>
 
           {/* Channel Info & Action Box */}
-          <Flex justify="space-between">
-            <Flex gap={8} align="center">
-              <Link to={`/channel/@${video?.creator?.user_handle}`}>
-                <Avatar
-                  style={{ minWidth: "40px", minHeight: "40px" }}
-                  src={video?.creator?.picture}
-                  size={"default"}
-                />
-              </Link>
-              <Flex vertical>
-                <Link
-                  style={{ minWidth: "max-content" }}
-                  to={`/channel/@${video?.creator?.user_handle}`}
-                >
-                  <Typography.Text
-                    style={{ fontSize: 14 }}
-                    strong
-                    type="secondary"
-                  >
-                    {video?.creator?.name}
-                  </Typography.Text>
+          <Flex justify="space-between" vertical={!screens.md}>
+            <Flex
+              gap={8}
+              align="center"
+              justify={!screens.md ? "space-between" : "initial"}
+            >
+              <Flex gap={8}>
+                <Link to={`/channel/@${video?.creator?.user_handle}`}>
+                  <Avatar
+                    style={{ minWidth: "40px", minHeight: "40px" }}
+                    src={video?.creator?.picture}
+                    size={"default"}
+                  />
                 </Link>
 
-                <Typography.Text style={{ fontSize: 12 }} type="secondary">
-                  {subscribersCount}{" "}
-                  {subscribersCount === 1 ? "Subscriber" : "Subscribers"}
-                </Typography.Text>
+                <Flex vertical>
+                  <Link
+                    style={{ minWidth: "max-content" }}
+                    to={`/channel/@${video?.creator?.user_handle}`}
+                  >
+                    <Typography.Text
+                      style={{ fontSize: 14 }}
+                      strong
+                      type="secondary"
+                    >
+                      {video?.creator?.name}
+                    </Typography.Text>
+                  </Link>
+
+                  <Typography.Text style={{ fontSize: 12 }} type="secondary">
+                    {subscribersCount}{" "}
+                    {subscribersCount === 1 ? "Subscriber" : "Subscribers"}
+                  </Typography.Text>
+                </Flex>
               </Flex>
               {user?._id && channelInfo ? (
                 user?._id === channelID ? null : isSubscribed ? (
@@ -169,38 +178,45 @@ export default function VideoCardLong({ videoID }) {
             </Flex>
 
             {/* Actions */}
-            <Flex align="center" gap={8}>
-              {/* (Like, Dislike) | Share |  */}
+            <Flex
+              // align={!screens.md ? "flex-end" : "center"}
+              justify={!screens.md ? "flex-end" : "center"}
+              gap={8}
+              style={{
+                padding: !screens.md ? 12 : 0,
 
-              <Button
-                shape="circle"
-                icon={<LikeOutlined />}
-                style={{
-                  ...(isLiked ? { background: gray[6] } : {}),
-                }}
-                onClick={likeORUnlikeVideo}
-                disabled={!user?._id}
-              >
-                {likesCount}
-              </Button>
-              <Button
-                onClick={() => setIsShareModalOpen(true)}
-                icon={<ShareAltOutlined />}
-              >
-                Share
-              </Button>
-              {user?._id && (
+                // overflow: "scroll",
+              }}
+            >
+              {/* (Like, Dislike) | Share |  */}
+              <>
                 <Button
-                  onClick={() => setIsSaveModalOpen(true)}
-                  icon={<PlusCircleOutlined />}
+                  shape="circle"
+                  icon={<LikeOutlined />}
+                  style={{
+                    ...(isLiked ? { background: gray[6] } : {}),
+                  }}
+                  onClick={likeORUnlikeVideo}
                   disabled={!user?._id}
                 >
-                  Save
+                  {likesCount}
                 </Button>
-              )}
-              {/* <Dropdown menu={{ items }} trigger={["click"]}>
-                <Button shape="circle" icon={<MoreOutlined />} />
-              </Dropdown> */}
+                <Button
+                  onClick={() => setIsShareModalOpen(true)}
+                  icon={<ShareAltOutlined />}
+                >
+                  Share
+                </Button>
+                {user?._id && (
+                  <Button
+                    onClick={() => setIsSaveModalOpen(true)}
+                    icon={<PlusCircleOutlined />}
+                    disabled={!user?._id}
+                  >
+                    Save
+                  </Button>
+                )}
+              </>
             </Flex>
           </Flex>
 
