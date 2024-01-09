@@ -1,6 +1,7 @@
 import {
   Button,
   Flex,
+  Grid,
   Image,
   Input,
   Modal,
@@ -166,6 +167,7 @@ const UploadVideoModal = () => {
     setFieldValue("selectedPlaylists", selectedArray);
   };
 
+  const screens = Grid.useBreakpoint();
   return (
     <>
       <Modal
@@ -181,7 +183,7 @@ const UploadVideoModal = () => {
         onCancel={closeModal}
         width={1000}
       >
-        <Flex gap={16}>
+        <Flex gap={16} vertical={!screens.md}>
           <Flex flex={0.6} vertical gap={16}>
             <Input
               placeholder="Title"
