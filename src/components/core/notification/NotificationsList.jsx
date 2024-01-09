@@ -1,21 +1,19 @@
 import { useEffect, useState } from "react";
-import { Flex, Image, List, theme } from "antd";
+import { List, theme } from "antd";
 import {
   getUsersNotifications,
   markAllUsersNotificationsAsRead,
 } from "@/api/apiCalls";
-import { Link } from "react-router-dom";
-import { CheckCircleOutlined } from "@ant-design/icons";
-import NotificationIcon from "./notification/NotificationIcon";
+import NotificationItem from "./NotificationItem";
 
 const NotificationsList = ({ unreadNotifications, setUnreadNotifications }) => {
+  const duplicateUnreadNotifications = [...unreadNotifications];
+
   const [loading, setLoading] = useState(false);
   const [notifications, setNotifications] = useState([]);
 
-  console.log({ unreadNotifications });
-
   const {
-    token: { colorBgContainer },
+    token: { colorBgContainer, colorBorder },
   } = theme.useToken();
 
   const loadNotifications = async () => {
@@ -60,11 +58,6 @@ const NotificationsList = ({ unreadNotifications, setUnreadNotifications }) => {
   return (
     <div
       style={{
-        width: 500,
-        height: 600,
-        overflow: "auto",
-        padding: "0 16px",
-        background: colorBgContainer,
         position: "absolute",
         right: 0,
         top: 70,
@@ -75,36 +68,22 @@ const NotificationsList = ({ unreadNotifications, setUnreadNotifications }) => {
       <List
         dataSource={notifications}
         renderItem={(item) => (
-          <List.Item key={item._id}>
-            <List.Item.Meta
-              avatar={<NotificationIcon severity={item?.severity} />}
-              title={item?.content}
-              description={new Date(item?.createdAt).toLocaleString()}
-            />
-            <Flex gap={8} align="center">
-              <Link to={`/video/${item?.payload?.video?.videoID}`}>
-                <Image
-                  src={item?.payload?.video?.thumbnail}
-                  preview={false}
-                  width={100}
-                />
-              </Link>
-
-              {unreadNotifications?.some(
-                (notif) => notif?._id === item?._id
-              ) && (
-                <div
-                  style={{
-                    width: 8,
-                    height: 8,
-                    borderRadius: "100%",
-                    background: "#fff",
-                  }}
-                />
-              )}
-            </Flex>
-          </List.Item>
+          <NotificationItem
+            item={item}
+            key={item?._id}
+            isUnread={duplicateUnreadNotifications?.some(
+              (notif) => notif?._id === item?._id
+            )}
+          />
         )}
+        bordered
+        style={{
+          background: colorBgContainer,
+          padding: 8,
+
+          width: 500,
+          height: 600,
+        }}
       />
     </div>
   );

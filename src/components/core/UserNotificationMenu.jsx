@@ -4,7 +4,7 @@ import FakeList from "./FakeList";
 import { useEffect, useState } from "react";
 import { useAuthUser } from "@/context/Auth/AuthProvider";
 import { getUsersNotifications } from "@/api/apiCalls";
-import NotificationsList from "./NotificationsList";
+import NotificationsList from "./notification/NotificationsList";
 
 export default function UserNotificationMenu() {
   const user = useAuthUser();
