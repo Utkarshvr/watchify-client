@@ -44,7 +44,10 @@ export default function UserNotificationMenu() {
         />
       </Badge>
       {openNotifications && (
-        <NotificationsList unreadNotifications={unreadNotifications} />
+        <NotificationsList
+          unreadNotifications={unreadNotifications}
+          setUnreadNotifications={setUnreadNotifications}
+        />
       )}
     </div>
   );

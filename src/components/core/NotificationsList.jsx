@@ -6,8 +6,9 @@ import {
 } from "@/api/apiCalls";
 import { Link } from "react-router-dom";
 import { CheckCircleOutlined } from "@ant-design/icons";
+import NotificationIcon from "./notification/NotificationIcon";
 
-const NotificationsList = ({ unreadNotifications }) => {
+const NotificationsList = ({ unreadNotifications, setUnreadNotifications }) => {
   const [loading, setLoading] = useState(false);
   const [notifications, setNotifications] = useState([]);
 
@@ -51,7 +52,7 @@ const NotificationsList = ({ unreadNotifications }) => {
 
   useEffect(() => {
     if (unreadNotifications?.length > 0) {
-      console.log("Should mark as read");
+      setUnreadNotifications([]);
       markAllNotificationsAsRead();
     }
   }, []);
@@ -76,16 +77,14 @@ const NotificationsList = ({ unreadNotifications }) => {
         renderItem={(item) => (
           <List.Item key={item._id}>
             <List.Item.Meta
-              avatar={
-                <CheckCircleOutlined style={{ color: "green", fontSize: 24 }} />
-              }
+              avatar={<NotificationIcon severity={item?.severity} />}
               title={item?.content}
               description={new Date(item?.createdAt).toLocaleString()}
             />
             <Flex gap={8} align="center">
-              <Link to={`/video/${item?.payload?.newVideo?.videoID}`}>
+              <Link to={`/video/${item?.payload?.video?.videoID}`}>
                 <Image
-                  src={item?.payload?.newVideo?.thumbnail}
+                  src={item?.payload?.video?.thumbnail}
                   preview={false}
                   width={100}
                 />
