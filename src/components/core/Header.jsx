@@ -56,7 +56,7 @@ export default function MainHeader() {
 
   return (
     <Flex style={boxStyle} gap={36} justify={"space-between"} align={"center"}>
-      <Flex gap={24}>
+      <Flex gap={24} align="center" >
         {!screens.xs && (
           <Button onClick={toggleSider} type="text" icon={<MenuOutlined />} />
         )}
