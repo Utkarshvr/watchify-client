@@ -30,9 +30,9 @@ const SubscriptionProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    if (subscriptions?.length > 0)
+    if (subscriptions?.length > 0) {
+      const allVideos = [];
       subscriptions?.map(async ({ channel }) => {
-        const allVideos = [];
         try {
           const { data } = await getAllVideos(channel?._id);
 
@@ -42,6 +42,7 @@ const SubscriptionProvider = ({ children }) => {
           console.log(error);
         }
       });
+    }
   }, [subscriptions]);
 
   return (
