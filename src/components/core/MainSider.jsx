@@ -71,10 +71,10 @@ export default function MainSider() {
       screens.xs
     ),
     getMenuItem(
-      <Link to={"customization"}>
-        {screens.xs ? <UserOutlined /> : "Customization"}
+      <Link to={`/channel/@${user?.user_handle}`}>
+        {screens.xs ? <UserOutlined /> : "You"}
       </Link>,
-      "customization",
+      "you",
       screens.xs ? null : <UserOutlined />,
       !screens.xs
         ? [
