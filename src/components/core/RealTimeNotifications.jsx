@@ -9,6 +9,7 @@ export default function RealTimeNotifications() {
     // Connect to the socket server
     const socket = io(import.meta.env.VITE_ROOT_API_URL, {
       withCredentials: true,
+      transports: ["websocket", "polling", "flashsocket"],
     });
 
     // Handle socket events
