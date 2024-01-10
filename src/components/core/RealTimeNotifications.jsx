@@ -7,7 +7,9 @@ export default function RealTimeNotifications() {
 
   useEffect(() => {
     // Connect to the socket server
-    const socket = io(import.meta.env.VITE_ROOT_API_URL);
+    const socket = io(import.meta.env.VITE_ROOT_API_URL, {
+      withCredentials: true,
+    });
 
     // Handle socket events
     socket.on("connect", () => {
