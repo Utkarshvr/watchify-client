@@ -13,10 +13,11 @@ const App = () => {
 
   return (
     <>
-      <RealTimeNotifications />
-      <RouterProvider router={router} />
-      <CreatePlaylistModal />
-      <UploadVideoModal />
+      <RealTimeNotifications>
+        <RouterProvider router={router} />
+        <CreatePlaylistModal />
+        <UploadVideoModal />
+      </RealTimeNotifications>
     </>
   );
 };

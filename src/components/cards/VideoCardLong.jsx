@@ -98,6 +98,9 @@ export default function VideoCardLong({ videoID }) {
 
   const screens = Grid.useBreakpoint();
 
+  console.log({ video });
+  if (!video) return;
+
   return isLoading && !video ? (
     <Loading />
   ) : (

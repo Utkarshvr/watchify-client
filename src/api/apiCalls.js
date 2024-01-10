@@ -76,11 +76,11 @@ export const getAllVideos = async (userId) => {
       : `${API_URL}/video/all`;
     const data = await axiosInstance.get(url);
 
-    console.log(data);
+    // console.log(data);
     return { data, error: null };
   } catch (error) {
     console.error(error);
-    return { data: null, error };
+    throw error;
   }
 };
 
@@ -92,7 +92,7 @@ export const getVideoByID = async (videoID) => {
     return { data, error: null };
   } catch (error) {
     console.error(error);
-    return { data: null, error };
+    throw error;
   }
 };
 
