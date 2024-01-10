@@ -1,6 +1,6 @@
 import { customiseUser, getUser } from "@/api/apiCalls";
 import { API_URL } from "@/config/api.routes";
-import { useAuthAPI } from "@/context/Auth/AuthProvider";
+import { useAuthAPI, useAuthUser } from "@/context/Auth/AuthProvider";
 import {
   useCustomizationAPI,
   useCustomizationExtendedAPI,
@@ -47,6 +47,7 @@ export default function CustomizationTabAction() {
   const values = useCustomizationForm();
   // const api = useCustomizationAPI();
   const userAPI = useAuthAPI();
+  const user = useAuthUser();
 
   const { setToUserInitialState } = useCustomizationExtendedAPI();
   const { initialStateAccToUserObject } = useCustomizationExtendedInfo();
@@ -80,7 +81,7 @@ export default function CustomizationTabAction() {
   return (
     <Flex gap={2}>
       <Button type="link">
-        <Link target="_blank" to={"https://www.youtube.com/@uv_codes"}>
+        <Link target="_blank" to={`/channel/@${user?.user_handle}`}>
           View Channel
         </Link>
       </Button>
