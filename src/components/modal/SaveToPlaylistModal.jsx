@@ -21,24 +21,24 @@ export default function SaveToPlaylistModal({ open, closeModal, video_uuid }) {
   // Get user's all playlists
   const [playlists, setPlaylists] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-
   useEffect(() => {
-    (async () => {
-      setIsLoading(true);
-      try {
-        const { data } = await getUsersPlaylists();
+    if (!isLoading)
+      (async () => {
+        setIsLoading(true);
+        try {
+          const { data } = await getUsersPlaylists();
 
-        const playlistsExcludingLikedVideos = data?.playlists?.filter(
-          (list) => list?.title !== "Liked Videos"
-        );
+          const playlistsExcludingLikedVideos = data?.playlists?.filter(
+            (list) => list?.title !== "Liked Videos"
+          );
 
-        setPlaylists(playlistsExcludingLikedVideos);
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setIsLoading(false);
-      }
-    })();
+          setPlaylists(playlistsExcludingLikedVideos);
+        } catch (error) {
+          console.log(error);
+        } finally {
+          setIsLoading(false);
+        }
+      })();
   }, [openPlaylistCreationModal, selectedRowKeys]);
 
   useEffect(() => {
@@ -50,8 +50,14 @@ export default function SaveToPlaylistModal({ open, closeModal, video_uuid }) {
       )
       ?.filter(Boolean);
 
-    setSelectedRowKeys(playlistsContainingGivenVideo);
-    // setInitialSelectedRowKeys(playlistsContainingGivenVideo);
+    // Check if selectedRowKeys are different before updating
+    if (
+      JSON.stringify(playlistsContainingGivenVideo) !==
+      JSON.stringify(selectedRowKeys)
+    ) {
+      setSelectedRowKeys(playlistsContainingGivenVideo);
+      // setInitialSelectedRowKeys(playlistsContainingGivenVideo);
+    }
   }, [playlists]);
 
   const onSelect = async (record, selected, selectedRows) => {
