@@ -29,6 +29,8 @@ export default function UserNotificationMenu() {
     }
   }, [user?._id, fetchAgain]);
 
+  const closeList = () => setOpenNotifications((prev) => !prev);
+
   return (
     <div style={{ position: "relative" }}>
       <Badge
@@ -41,13 +43,14 @@ export default function UserNotificationMenu() {
           shape="circle"
           icon={openNotifications ? <BellFilled /> : <BellOutlined />}
           size="large"
-          onClick={() => setOpenNotifications((prev) => !prev)}
+          onClick={closeList}
         />
       </Badge>
       {openNotifications && (
         <NotificationsList
           unreadNotifications={unreadNotifications}
           setUnreadNotifications={setUnreadNotifications}
+          closeList={closeList}
         />
       )}
     </div>

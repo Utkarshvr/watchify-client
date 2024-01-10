@@ -1,12 +1,17 @@
 import { useEffect, useState } from "react";
-import { List, theme } from "antd";
+import { Button, Flex, Grid, List, Typography, theme } from "antd";
 import {
   getUsersNotifications,
   markAllUsersNotificationsAsRead,
 } from "@/api/apiCalls";
 import NotificationItem from "./NotificationItem";
+import { CloseCircleOutlined } from "@ant-design/icons";
 
-const NotificationsList = ({ unreadNotifications, setUnreadNotifications }) => {
+const NotificationsList = ({
+  unreadNotifications,
+  setUnreadNotifications,
+  closeList,
+}) => {
   const duplicateUnreadNotifications = [...unreadNotifications];
 
   const [loading, setLoading] = useState(false);
@@ -55,18 +60,27 @@ const NotificationsList = ({ unreadNotifications, setUnreadNotifications }) => {
     }
   }, []);
 
+  const screens = Grid.useBreakpoint();
+  console.log(!screens.md ? "100vw" : "auto");
+
   return (
     <div
       style={{
-        position: "absolute",
+        position: !screens.md ? "fixed" : "absolute",
         right: 0,
-        top: 70,
+        top: !screens.md ? 0 : 70,
         borderRadius: 24,
         transition: "all 1s",
+        zIndex: 10000000,
       }}
     >
       <List
         dataSource={notifications}
+        header={
+          <Flex justify="space-between">
+            <Typography.Text strong>Notifications</Typography.Text>
+          </Flex>
+        }
         renderItem={(item) => (
           <NotificationItem
             item={item}
@@ -81,9 +95,21 @@ const NotificationsList = ({ unreadNotifications, setUnreadNotifications }) => {
           background: colorBgContainer,
           padding: 8,
 
-          width: 500,
-          height: 600,
+          width: !screens.md ? "100vw" : 500,
+          height: !screens.md ? "100vh" : 600,
         }}
+      />
+      <Button
+        icon={<CloseCircleOutlined />}
+        onClick={closeList}
+        style={{
+          position: "absolute",
+          bottom: 100,
+          left: "50%",
+          transform: "translateX(-50%)",
+        }}
+        size="large"
+        shape="circle"
       />
     </div>
   );
