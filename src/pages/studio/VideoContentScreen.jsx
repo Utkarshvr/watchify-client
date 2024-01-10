@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Button, Flex, Image, Table, Typography } from "antd";
 import { getAllVideos } from "@/api/apiCalls";
-import { useAuthUser } from "@/context/Auth/AuthProvider";
 
 import VideoPlayerIntefaceImg from "@/assets/images/video-player-interface.jpg";
 import {
@@ -10,36 +9,24 @@ import {
   LinkOutlined,
 } from "@ant-design/icons";
 import { Link } from "react-router-dom";
+import { useAuthUser } from "@/context/Auth/AuthProvider";
 
-const columns = [];
-
-// Selection Logic
-//   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
-
-//   const onSelectChange = (newSelectedRowKeys) => {
-//     console.log("selectedRowKeys changed: ", newSelectedRowKeys);
-//     setSelectedRowKeys(newSelectedRowKeys);
-//   };
-
-//   const rowSelection = {
-//     selectedRowKeys,
-//     onChange: onSelectChange,
-//   };
 export default function VideoContentScreen() {
   const [videos, setVideos] = useState([]);
-  // const user = useAuthUser();
+  const user = useAuthUser();
   console.log(videos);
 
   useEffect(() => {
-    (async () => {
-      try {
-        const { data } = await getAllVideos();
-        setVideos(data?.videos);
-      } catch (error) {
-        console.log(error);
-      }
-    })();
-  }, []);
+    if (user)
+      (async () => {
+        try {
+          const { data } = await getAllVideos(user?._id);
+          setVideos(data?.videos);
+        } catch (error) {
+          console.log(error);
+        }
+      })();
+  }, [user]);
 
   const dataSource = videos.map((video) => ({
     key: video?._id,
@@ -76,7 +63,7 @@ export default function VideoContentScreen() {
       </Flex>
     ),
     date: new Date(video?.createdAt).toDateString(),
-    views: 512,
+    views: video?.views_count,
     comments: video?.numComments,
     actions: (
       <Flex justify="center" gap={8}>

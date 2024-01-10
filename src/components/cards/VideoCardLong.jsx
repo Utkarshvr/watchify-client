@@ -10,7 +10,7 @@ import {
   PlusCircleOutlined,
   ShareAltOutlined,
 } from "@ant-design/icons";
-import { Avatar, Button, Flex, Grid, Typography } from "antd";
+import { Avatar, Button, Flex, Grid, Skeleton, Typography } from "antd";
 import { formatDistanceToNow } from "date-fns";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
@@ -98,12 +98,23 @@ export default function VideoCardLong({ videoID }) {
 
   const screens = Grid.useBreakpoint();
 
-  console.log({ video });
-  if (!video) return;
+  // console.log({ video });
+  if (isLoading && !video)
+    return (
+      <Skeleton.Image
+        style={{
+          borderRadius: 12,
+          width: !screens.md ? "98vw" : 900,
+          maxWidth: "100%",
+          minHeight: !screens.md ? 300 : 600,
+          margin: "auto",
+          // width: "100%",
+        }}
+        active={true}
+      />
+    );
 
-  return isLoading && !video ? (
-    <Loading />
-  ) : (
+  return (
     <>
       <Flex
         style={{

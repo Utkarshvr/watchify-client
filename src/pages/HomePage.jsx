@@ -1,6 +1,7 @@
 import NoVideo from "@/Screens/NoVideo";
 import { getAllVideos } from "@/api/apiCalls";
 import Loading from "@/components/ui/Loading";
+import PageTitle from "@/components/ui/PageTitle";
 import { useAuthUser } from "@/context/Auth/AuthProvider";
 import VideoFeed from "@/layout/VideoFeed";
 import { useEffect, useState } from "react";
@@ -27,6 +28,15 @@ export default function HomePage() {
   if (isLoading) return <Loading />;
 
   return (
-    <>{videos?.length > 0 ? <VideoFeed videos={videos} /> : <NoVideo />}</>
+    <>
+      {videos?.length > 0 ? (
+        <>
+          <PageTitle title={"All Videos"} />
+          <VideoFeed videos={videos} />
+        </>
+      ) : (
+        <NoVideo />
+      )}
+    </>
   );
 }

@@ -26,8 +26,15 @@ export default function MessageProvider({ children }) {
       content,
     });
   };
+
+  const info = (content) => {
+    messageApi.open({
+      type: "info",
+      content,
+    });
+  };
   return (
-    <MessageContext.Provider value={{ success, error, warning }}>
+    <MessageContext.Provider value={{ success, error, warning, info }}>
       {contextHolder}
       {children}
     </MessageContext.Provider>
