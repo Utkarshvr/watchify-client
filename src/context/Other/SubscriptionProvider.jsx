@@ -37,7 +37,7 @@ const SubscriptionProvider = ({ children }) => {
           const { data } = await getAllVideos(channel?._id);
 
           allVideos.push(...data?.videos);
-          setVideos(allVideos);
+          setVideos([...allVideos]);
         } catch (error) {
           console.log(error);
         }
