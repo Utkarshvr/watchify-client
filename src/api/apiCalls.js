@@ -21,7 +21,7 @@ export const getUser = async () => {
     );
 
     console.log(data);
-    return { data, error: null };
+    return { data: data?.data, error: null };
   } catch (err) {
     console.error(err);
     return { data: null, error: err };

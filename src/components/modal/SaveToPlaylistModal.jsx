@@ -20,7 +20,7 @@ export default function SaveToPlaylistModal({ open, closeModal, video_uuid }) {
 
   // Get user's all playlists
   const [playlists, setPlaylists] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
     if (!isLoading)
       (async () => {

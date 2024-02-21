@@ -34,7 +34,6 @@ const AuthAPIContext = createContext();
 const AuthUserContext = createContext(INITIAL_STATE.user);
 const AuthLoadingContext = createContext(INITIAL_STATE.loading);
 
-
 export default function AuthProvider({ children }) {
   const [state, dispatch] = useReducer(reducer, INITIAL_STATE);
 
@@ -62,6 +61,7 @@ export default function AuthProvider({ children }) {
       const { data } = await getUser();
 
       if (data) {
+        console.log("User is fetched successfulyy", { ___uSEr___: data });
         api.onLoginSuccess(data?.user);
       } else {
         api.onLoginFailure();
