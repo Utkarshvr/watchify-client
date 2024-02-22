@@ -71,6 +71,8 @@ const NotificationsList = ({
         top: !screens.md ? 0 : 70,
         borderRadius: 24,
         transition: "all 1s",
+        width: !screens.md ? "100vw" : 500,
+        height: !screens.md ? "100vh" : 600,
         zIndex: 10000000,
       }}
     >
@@ -94,23 +96,23 @@ const NotificationsList = ({
         style={{
           background: colorBgContainer,
           padding: 8,
-
-          width: !screens.md ? "100vw" : 500,
-          height: !screens.md ? "100vh" : 600,
+          height: "100%",
         }}
       />
-      <Button
-        icon={<CloseCircleOutlined />}
-        onClick={closeList}
-        style={{
-          position: "absolute",
-          bottom: 100,
-          left: "50%",
-          transform: "translateX(-50%)",
-        }}
-        size="large"
-        shape="circle"
-      />
+      {!screens.md && (
+        <Button
+          icon={<CloseCircleOutlined />}
+          onClick={closeList}
+          style={{
+            position: "absolute",
+            bottom: 100,
+            left: "50%",
+            transform: "translateX(-50%)",
+          }}
+          size="large"
+          shape="circle"
+        />
+      )}
     </div>
   );
 };
