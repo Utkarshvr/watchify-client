@@ -2,16 +2,10 @@ import { useAuthUser } from "@/context/Auth/AuthProvider";
 import { Button, Flex, Grid, Typography } from "antd";
 import GoogleSignupBtn from "../button/GoogleSignupBtn";
 import Search from "antd/es/input/Search";
-import {
-  CloseOutlined,
-  MenuOutlined,
-  SearchOutlined,
-  UploadOutlined,
-} from "@ant-design/icons";
+import { CloseOutlined, MenuOutlined, SearchOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import { useSider } from "@/context/Other/SiderProvider";
 import UserMenu from "./UserMenu";
-import { useModal } from "@/context/Other/ModalProvider";
 import UserNotificationMenu from "./UserNotificationMenu";
 import UploadVideoBtn from "../button/UploadVideoBtn";
 import { Link } from "react-router-dom";
@@ -39,6 +33,7 @@ export default function MainHeader() {
         justify={"space-between"}
         align={"center"}
       >
+        <img src="/assets/icon.png" width={28} height={28} alt="logo" />
         <Search
           placeholder="Search"
           allowClear
@@ -56,17 +51,22 @@ export default function MainHeader() {
 
   return (
     <Flex style={boxStyle} gap={36} justify={"space-between"} align={"center"}>
-      <Flex gap={24} align="center" >
+      <Flex gap={24} align="center">
         {!screens.xs && (
           <Button onClick={toggleSider} type="text" icon={<MenuOutlined />} />
         )}
         <Link style={{ width: "max-content" }} to={"/"}>
-          <Typography.Text
-            strong
-            style={{ fontSize: 20, width: "max-content" }}
-          >
-            Watchify
-          </Typography.Text>
+          <Flex align="center" justify="center" gap={8}>
+            <img src="/assets/icon.png" width={28} height={28} alt="logo" />
+            {!screens.xs && (
+              <Typography.Text
+                strong
+                style={{ fontSize: 20, width: "max-content" }}
+              >
+                Watchify
+              </Typography.Text>
+            )}
+          </Flex>
         </Link>
       </Flex>
 

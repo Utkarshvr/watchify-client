@@ -36,9 +36,7 @@ export default function StudioHeader() {
         justify={"space-between"}
         align={"center"}
       >
-        <Typography.Text strong style={{ fontSize: 20 }}>
-          Watchify
-        </Typography.Text>
+        <img src="/assets/icon.png" width={28} height={28} alt="logo" />
         <Search
           placeholder="Search"
           allowClear
@@ -58,9 +56,17 @@ export default function StudioHeader() {
     <Flex style={boxStyle} gap={36} justify={"space-between"} align={"center"}>
       <Flex gap={24}>
         <Button onClick={toggleSider} type="text" icon={<MenuOutlined />} />
-        <Typography.Text strong style={{ fontSize: 20 }}>
-          Watchify
-        </Typography.Text>
+        <Flex align="center" justify="center" gap={8}>
+          <img src="/assets/icon.png" width={28} height={28} alt="logo" />
+          {!screens.xs && (
+            <Typography.Text
+              strong
+              style={{ fontSize: 20, width: "max-content" }}
+            >
+              Watchify
+            </Typography.Text>
+          )}
+        </Flex>
       </Flex>
       {!screens.xs ? (
         <Search
